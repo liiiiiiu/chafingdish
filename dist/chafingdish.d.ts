@@ -17,9 +17,9 @@ export declare const wx_clone_deep: typeof weapp.wx_clone_deep, wx_dataset: type
         from: string;
         params: any;
     };
-    push: () => any;
-    replace: () => any;
-    back: () => any;
+    push: (path: string, params?: object | null | undefined, successCallback?: ((data?: any) => any) | undefined, failCallback?: ((data?: any) => any) | undefined, completeCallback?: ((data?: any) => any) | undefined) => any;
+    replace: (path: string, params?: object | null | undefined, successCallback?: ((data?: any) => any) | undefined, failCallback?: ((data?: any) => any) | undefined, completeCallback?: ((data?: any) => any) | undefined) => any;
+    back: (delta?: number | undefined, successCallback?: ((data?: any) => any) | undefined, failCallback?: ((data?: any) => any) | undefined, completeCallback?: ((data?: any) => any) | undefined) => any;
 }, ResponseView: typeof weapp.ResponseView;
 export declare const wow_array: typeof enhancer.wow_array;
 export type { ResponseViewType, ResponseViewConfigType } from './core/wx';

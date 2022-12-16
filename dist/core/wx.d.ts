@@ -80,9 +80,9 @@ export declare const wx_router: {
         from: string;
         params: any;
     };
-    push: () => any;
-    replace: () => any;
-    back: () => any;
+    push: (path: string, params?: object | null, successCallback?: (data?: any) => any, failCallback?: (data?: any) => any, completeCallback?: (data?: any) => any) => any;
+    replace: (path: string, params?: object | null, successCallback?: (data?: any) => any, failCallback?: (data?: any) => any, completeCallback?: (data?: any) => any) => any;
+    back: (delta?: number, successCallback?: (data?: any) => any, failCallback?: (data?: any) => any, completeCallback?: (data?: any) => any) => any;
 };
 export interface ResponseViewType {
     showLoading: any;
