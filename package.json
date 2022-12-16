@@ -1,0 +1,44 @@
+{
+  "name": "chafingdish",
+  "version": "1.0.0",
+  "description": "工具函数",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc -p tsconfig.json",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "typescript": "^4.5.4",
+    "vite": "^2.9.9"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/chafingdish.es.js",
+  "module": "./dist/chafingdish.umd.js",
+  "types": "./dist/chafingdish.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/chafingdish.es.js",
+      "require": "./dist/chafingdish.umd.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/liiiiiiu/chafingdish.git"
+  },
+  "keywords": [
+    "javascript",
+    "util",
+    "utils",
+    "tool",
+    "tools",
+    "weapp",
+    "微信小程序",
+    "mock",
+    "array"
+  ],
+  "author": "liujiachang",
+  "license": "MIT"
+}
