@@ -10,7 +10,8 @@
     "noEmit": false,
     "emitDeclarationOnly": true,
     "declaration": true,
-    "declarationDir": "dist"
+    "declarationDir": "dist",
+    "allowSyntheticDefaultImports": true
   },
   "files": ["lib/chafingdish.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]

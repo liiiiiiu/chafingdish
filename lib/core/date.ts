@@ -1,9 +1,27 @@
+import dayjs from 'dayjs'
+import { UnitType } from 'dayjs'
+
 import Check from '../helper/check'
 
 const check = new Check()
 
+// fix ios
+// new Date('2022-12-12') Null
+// new Date('2022/12/12') ok
+function fixIos(value: string | number) {
+  if (value && check.str(value)) {
+    return (value as string).replace(/-/g, '/')
+  }
+
+  return value
+}
+
+export const d_day = dayjs
+
 /**
- * Get now timestamp.
+ * Get timestamp.
+ *
+ * @param {string|number|undefined} value Timestamp or date.
  *
  * @returns {number} Timestamp.
  *
@@ -11,8 +29,27 @@ const check = new Check()
  *
  * d_time() // 1656819176086
  */
-export function d_time(): number {
-  return +Date.now()
+export function d_time(value?: string | number): number {
+  if (!value) return +Date.now()
+
+  value = fixIos(value)
+
+  return +new Date(value)
+}
+
+/**
+ * Get timestamp.
+ *
+ * @param {string|number|undefined} value Timestamp or date.
+ *
+ * @returns {number} Timestamp.
+ *
+ * @example
+ *
+ * d_time() // 1656819176086
+ */
+export function d_timestamp(value?: string | number): number {
+  return d_time(value)
 }
 
 /**
@@ -35,12 +72,7 @@ export function d_format(value?: string | number, separator: string = '-'): stri
 
   separator = separator.trim()
 
-  // fix ios
-  // new Date('2022-12-12') Null
-  // new Date('2022/12/12') ok
-  if (value && check.str(value)) {
-    value = (value as string).replace(/-/g, '/')
-  }
+  value = fixIos(value)
 
   let date = new Date(+new Date(value))
 
@@ -69,4 +101,25 @@ export function d_format(value?: string | number, separator: string = '-'): stri
  */
 export function d_format_YMD(value?: string | number, separator: string = '-'): string {
   return d_format(value, separator).split(' ')[0]
+}
+
+/**
+ * Get the difference between two dates.
+ *
+ * see: https://dayjs.fenxianglu.cn/category/display.html#%E6%97%A5%E5%8E%86%E6%97%B6%E9%97%B4
+ *
+ * @param {string|number} value1 Timestamp or date.
+ * @param {string|number} value12 Timestamp or date.
+ * @param {UnitType} unit The specified unit.
+ *
+ * @returns {string} Formatted date, including only the year, month and day.
+ *
+ * @example
+ *
+ * d_diff('2022-07-10', '2022-07-03') // 7
+ */
+export function d_diff(value1: string | number, value2: string | number, unit: UnitType = 'day') {
+  const date1 = dayjs(value1)
+
+  return date1.diff(value2, unit)
 }

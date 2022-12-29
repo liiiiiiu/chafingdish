@@ -1,5 +1,10 @@
+import dayjs from 'dayjs';
+import { UnitType } from 'dayjs';
+export declare const d_day: typeof dayjs;
 /**
- * Get now timestamp.
+ * Get timestamp.
+ *
+ * @param {string|number|undefined} value Timestamp or date.
  *
  * @returns {number} Timestamp.
  *
@@ -7,7 +12,19 @@
  *
  * d_time() // 1656819176086
  */
-export declare function d_time(): number;
+export declare function d_time(value?: string | number): number;
+/**
+ * Get timestamp.
+ *
+ * @param {string|number|undefined} value Timestamp or date.
+ *
+ * @returns {number} Timestamp.
+ *
+ * @example
+ *
+ * d_time() // 1656819176086
+ */
+export declare function d_timestamp(value?: string | number): number;
 /**
  * Get formatted date.
  *
@@ -36,3 +53,19 @@ export declare function d_format(value?: string | number, separator?: string): s
  * d_format_YMD(1656819176086) // '2022-07-03'
  */
 export declare function d_format_YMD(value?: string | number, separator?: string): string;
+/**
+ * Get the difference between two dates.
+ *
+ * see: https://dayjs.fenxianglu.cn/category/display.html#%E6%97%A5%E5%8E%86%E6%97%B6%E9%97%B4
+ *
+ * @param {string|number} value1 Timestamp or date.
+ * @param {string|number} value12 Timestamp or date.
+ * @param {UnitType} unit The specified unit.
+ *
+ * @returns {string} Formatted date, including only the year, month and day.
+ *
+ * @example
+ *
+ * d_diff('2022-07-10', '2022-07-03') // 7
+ */
+export declare function d_diff(value1: string | number, value2: string | number, unit?: UnitType): number;

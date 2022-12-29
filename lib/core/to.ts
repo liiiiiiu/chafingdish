@@ -104,18 +104,34 @@ export function to_float(value: unknown, decimal: 1 | 2 = 2, round: boolean = fa
  *
  * @param {Object} value The value to convert.
  * @param {boolean} round Use Math.round?
+ * @param {boolean} reverse cent to yuan
+ * @param {0|1|2} decimal decimal reserved.
  *
- * @returns {number} Converted value.
+ * @returns {number|string} Converted value.
  *
  * @example
  *
  * to_cn_cent(1.567) // 156
  * to_cn_cent(1.567, true) // 157
+ * to_cn_cent(156, false, true) // '1.56'
+ * to_cn_cent(156, false, true, 2) // '1.56'
+ * to_cn_cent(156, false, true, 1) // '1.6'
+ * to_cn_cent(156, false, true, 0) // 1.56
  */
-export function to_cn_cent(value: unknown, round: boolean = false): number {
-  let newValue = +to_float(value, 2, round) || 0
+export function to_cn_cent(value: unknown, round: boolean = false, reverse: boolean = false, decimal: 0 | 1 | 2 = 2): number | string {
+  let newValue
 
-  return parseInt(accMul(newValue, 100) + '') || 0
+  if (!reverse) {
+    newValue = +to_float(value, 2, round) || 0
+
+    return parseInt(accMul(newValue, 100) + '') || 0
+  }
+
+  newValue = to_integer(value)
+
+  const yuan = newValue / 100
+
+  return !decimal ? yuan : yuan.toFixed(decimal)
 }
 
 /**

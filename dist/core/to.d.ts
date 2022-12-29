@@ -67,15 +67,21 @@ export declare function to_float(value: unknown, decimal?: 1 | 2, round?: boolea
  *
  * @param {Object} value The value to convert.
  * @param {boolean} round Use Math.round?
+ * @param {boolean} reverse cent to yuan
+ * @param {0|1|2} decimal decimal reserved.
  *
- * @returns {number} Converted value.
+ * @returns {number|string} Converted value.
  *
  * @example
  *
  * to_cn_cent(1.567) // 156
  * to_cn_cent(1.567, true) // 157
+ * to_cn_cent(156, false, true) // '1.56'
+ * to_cn_cent(156, false, true, 2) // '1.56'
+ * to_cn_cent(156, false, true, 1) // '1.6'
+ * to_cn_cent(156, false, true, 0) // 1.56
  */
-export declare function to_cn_cent(value: unknown, round?: boolean): number;
+export declare function to_cn_cent(value: unknown, round?: boolean, reverse?: boolean, decimal?: 0 | 1 | 2): number | string;
 /**
  * Convert value to boolean.
  *

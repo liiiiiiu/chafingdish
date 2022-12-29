@@ -128,7 +128,7 @@ nestArr.nest(null, 'parent_id')
 | to_number | to_number('1') |  1  |
 | to_integer | to_integer(1.6, false) / to_integer(1.6, true) |  1 / 2 |
 | to_float | to_float(1.256, 1, false) / to_float(1.256, 2, true) |  '1.2' / '1.26' |
-| to_cn_cent | to_cn_cent(190.50) |  19050 |
+| to_cn_cent | to_cn_cent(190.50) / to_cn_cent(19050, false, true) |  19050 / '190.50' |
 | to_boolean | to_boolean(0) | false |
 | to_array | to_array(0) / to_array('1, 2, 3') | [0] / [1, 2, 3] |
 | to_symbol | to_symbol(0) | Symbol(0) |
@@ -140,9 +140,11 @@ nestArr.nest(null, 'parent_id')
 
 |     d_   |     usage    | result |
 |    ---    |      ---     |  ----  |
-| d_time | d_time() |  1656571581142 |
+| d_day | d_day().date() | 参考：[Day.js](https://dayjs.fenxianglu.cn/)  |
+| d_timestamp | d_timestamp() |  1656571581142 |
 | d_format | d_format() |  '2022-06-30 14:45:15' |
 | d_format_YMD | d_format_YMD() |  '2022-06-30'  |
+| d_diff |  d_diff('2022-07-10', '2022-07-03') |  7  |
 
 ### gen
 

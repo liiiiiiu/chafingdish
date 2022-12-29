@@ -53,9 +53,12 @@ export const {
 } = generator
 
 export const {
+  d_day,
   d_time,
+  d_timestamp,
   d_format,
-  d_format_YMD
+  d_format_YMD,
+  d_diff
 } = datetTransformer
 
 export const {
