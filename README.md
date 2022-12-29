@@ -6,10 +6,11 @@
 为前端开发提供的工具函数，适用于 Web 及微信小程序：
 
 1. wow_array，增强版数组，提供切片、批量删除、嵌套等功能；
-2. is函数用于判断数据类型；
-3. to函数用于强制转换数据类型；
-4. wx函数对部分小程序接口进行 Promise 封装，并提供 `wx_router` 路由函数以及 `ResponseView` 视图交互类；
-5. 更多功能查看下方示例。
+2. is 函数用于判断数据类型；
+3. to 函数用于强制转换数据类型；
+4. d  函数用于处理时间；
+5. wx 函数对部分小程序接口进行 Promise 封装，并提供 `wx_router` 路由函数以及 `ResponseView` 视图交互类；
+6. 更多功能查看下方示例。
 
 ## 安装
 
@@ -31,8 +32,6 @@ import * as utils from 'chafingdish'
 
 #### wow_array
 
-**Wow array, better array!**
-
 ```javascript
 let arr = wow_array([1, 2, 3])
 arr[0] // 1
@@ -50,7 +49,7 @@ arr.max // 3
 arr.remove(0, val => val === 3) // [2]
 arr.shuffle // [1, 3, 2]
 
-let nestArr = wow_array([
+const nestArr = wow_array([
   { id: 1, parent_id: null },
   { id: 2, parent_id: 1 },
   { id: 3, parent_id: 1 },
