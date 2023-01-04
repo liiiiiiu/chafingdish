@@ -1355,7 +1355,10 @@ class ResponseView$1 {
     let res = null;
     try {
       sendRequest && (res = await sendRequest(this.reqPage), this.hideLoading, this.reqLoading = false);
-      if (res) {
+      if (check$2.nul(res) || check$2.undef(res)) {
+        viewValueFailHook();
+        failCallback && failCallback(res);
+      } else {
         const resData = (_c = (_b = (_a = res.data) == null ? void 0 : _a.data) != null ? _b : res.data) != null ? _c : res;
         this.page.setData({
           [this.objKey]: !reachBottom ? resData : this.page.data[this.objKey].concat(resData)
@@ -1367,9 +1370,6 @@ class ResponseView$1 {
         console.log(`${this.objKey} `, this.page.data[this.objKey]);
         console.log(`${this.viewKey} `, this.page.data[this.viewKey]);
         console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-      } else {
-        viewValueFailHook();
-        failCallback && failCallback(res);
       }
     } catch (error) {
       console.error(`[ResponseView] ${error}`);
@@ -1393,20 +1393,7 @@ class ResponseView$1 {
     let res = null;
     try {
       sendRequest && (res = await sendRequest(), this.hideLoading, this.reqLoading = false);
-      if (res) {
-        if (this.config.show_success_toast) {
-          wx.showToast({
-            title: this.config.success_toast_title || "\u63D0\u4EA4\u6210\u529F",
-            icon: "success",
-            duration: this.toastDuration
-          });
-          setTimeout(() => {
-            successCallback && successCallback(res);
-          }, this.toastDuration);
-        } else {
-          successCallback && successCallback(res);
-        }
-      } else {
+      if (check$2.nul(res) || check$2.undef(res) || res === false) {
         if (this.config.show_fail_toast) {
           wx.showToast({
             title: this.config.fail_toast_title || "\u63D0\u4EA4\u5931\u8D25\uFF0C\u8BF7\u91CD\u8BD5",
@@ -1418,6 +1405,19 @@ class ResponseView$1 {
           }, this.toastDuration);
         } else {
           failCallback && failCallback(res);
+        }
+      } else {
+        if (this.config.show_success_toast) {
+          wx.showToast({
+            title: this.config.success_toast_title || "\u63D0\u4EA4\u6210\u529F",
+            icon: "success",
+            duration: this.toastDuration
+          });
+          setTimeout(() => {
+            successCallback && successCallback(res);
+          }, this.toastDuration);
+        } else {
+          successCallback && successCallback(res);
         }
       }
     } catch (error) {

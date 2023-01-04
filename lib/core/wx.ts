@@ -752,7 +752,11 @@ export class ResponseView implements ResponseViewType {
     try {
       sendRequest && ((res = await sendRequest(this.reqPage)), this.hideLoading, (this.reqLoading = false))
 
-      if (res) {
+      if (check.nul(res) || check.undef(res)) {
+        viewValueFailHook()
+
+        failCallback && failCallback(res)
+      } else {
         const resData = res.data?.data ?? res.data ?? res
 
         this.page.setData({
@@ -768,10 +772,6 @@ export class ResponseView implements ResponseViewType {
         console.log(`${this.objKey} `, this.page.data[this.objKey])
         console.log(`${this.viewKey} `, this.page.data[this.viewKey])
         console.log('<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
-      } else {
-        viewValueFailHook()
-
-        failCallback && failCallback(res)
       }
     } catch (error: any) {
       console.error(`[ResponseView] ${error}`)
@@ -805,23 +805,7 @@ export class ResponseView implements ResponseViewType {
     try {
       sendRequest && ((res = await sendRequest()), this.hideLoading, (this.reqLoading = false))
 
-      if (res) {
-        if (this.config.show_success_toast) {
-          // @ts-ignore
-          wx.showToast({
-            title: this.config.success_toast_title || '提交成功',
-            icon: 'success',
-            duration: this.toastDuration
-          })
-
-          setTimeout(() => {
-            successCallback && successCallback(res)
-          }, this.toastDuration)
-        } else {
-          successCallback && successCallback(res)
-        }
-
-      } else {
+      if (check.nul(res) || check.undef(res) || res === false) {
         if (this.config.show_fail_toast) {
           // @ts-ignore
           wx.showToast({
@@ -835,6 +819,21 @@ export class ResponseView implements ResponseViewType {
           }, this.toastDuration)
         } else {
           failCallback && failCallback(res)
+        }
+      } else {
+        if (this.config.show_success_toast) {
+          // @ts-ignore
+          wx.showToast({
+            title: this.config.success_toast_title || '提交成功',
+            icon: 'success',
+            duration: this.toastDuration
+          })
+
+          setTimeout(() => {
+            successCallback && successCallback(res)
+          }, this.toastDuration)
+        } else {
+          successCallback && successCallback(res)
         }
       }
     } catch (error: any) {
