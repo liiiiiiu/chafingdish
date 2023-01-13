@@ -264,6 +264,7 @@ export const wx_authorize: {
    * @param {Function} failCallback 授权失败的回调函数
    */
   check: (scopeName: 'userLocation' | 'userLocationBackground' | 'record' | 'camera' | 'bluetooth' | 'writePhotosAlbum' | 'addPhoneContact' | 'addPhoneCalendar' | 'werun', successCallback?: Function, failCallback?: Function) => undefined
+
   /**
    * 获得当前 scope 的授权状态并根据授权结果执行对应的操作；
    *

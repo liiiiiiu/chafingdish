@@ -1366,6 +1366,16 @@ class WxRouter {
       console.warn("[wx_router] Unable to get `pages` from app.json, url is needed!");
     }
   }
+  push(path, params, successCallback, failCallback, completeCallback) {
+    if (!path)
+      return;
+    const { newPath, isTabbar } = this.path2Check(path);
+    this.log4Route(newPath, params);
+    (!isTabbar ? wx.navigateTo : wx.switchTab)({
+      url: !isTabbar ? this.path2ConcatParam(newPath, params) : newPath,
+      ...this.container4Callback(successCallback, failCallback, completeCallback)
+    });
+  }
   replace(path, params, successCallback, failCallback, completeCallback) {
     if (!path)
       return;
