@@ -1,9 +1,16 @@
-import * as checker from './core/is'
-import * as transformer from './core/to'
-import * as generator from './core/gen'
-import * as datetTransformer from './core/date'
-import * as weapp from './core/wx'
-import * as enhancer from './core/wow'
+import * as wow from './core/wow'
+import * as is from './core/is'
+import * as to from './core/to'
+import * as gen from './core/gen'
+import * as date from './core/date'
+import * as wx from './core/wx'
+import * as wxRouter from './core/wx-router'
+import * as wxResponsiveView from './core/wx-responsive-view'
+import * as wxAuthorize from './core/wx-authorize'
+
+export const {
+  wow_array
+} = wow
 
 export const {
   is_string,
@@ -31,7 +38,7 @@ export const {
   is_url,
   is_cn_phone_number,
   is_cn_id_card
-} = checker
+} = is
 
 export const {
   to_string,
@@ -45,12 +52,12 @@ export const {
   to_null,
   to_cn_cent,
   to_cn_pinyin
-} = transformer
+} = to
 
 export const {
   gen_uuid,
   gen_random_integer,
-} = generator
+} = gen
 
 export const {
   d_day,
@@ -59,7 +66,7 @@ export const {
   d_format,
   d_format_YMD,
   d_diff
-} = datetTransformer
+} = date
 
 export const {
   wx_clone_deep,
@@ -69,16 +76,27 @@ export const {
   wx_window_height,
   wx_window_pixel_ratio,
   wx_image_info_sync,
-  wx_file_info_sync,
-  wx_router,
-  ResponseView
-} = weapp
+  wx_file_info_sync
+} = wx
 
 export const {
-  wow_array
-} = enhancer
+  wx_router
+} = wxRouter
+
+export const {
+  wx_authorize
+} = wxAuthorize
+
+export const {
+  ResponseView
+} = wxResponsiveView
+
+
+export type {
+  ScopeNameType
+} from './core/wx-authorize'
 
 export type {
   ResponseViewType,
   ResponseViewConfigType
-} from './core/wx'
+} from './core/wx-responsive-view'

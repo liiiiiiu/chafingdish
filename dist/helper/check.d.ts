@@ -19,4 +19,5 @@ export default class Check {
     len(value: unknown): boolean;
     args(value: unknown): boolean;
     err(value: unknown): boolean;
+    exception(handle: any): any;
 }

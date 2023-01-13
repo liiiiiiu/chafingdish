@@ -83,4 +83,12 @@ export default class Check {
 
     return tag == '[object Error]' || tag == '[object DOMException]' || (typeof (value as any).message === 'string' && typeof (value as any).name === 'string' && !this.plainObj(value))
   }
+
+  public exception(handle: any) {
+    try {
+      return handle && this.fun(handle) && handle()
+    } catch (error: any) {
+      // throw Error(error || 'This tool only for weapp!')
+    }
+  }
 }

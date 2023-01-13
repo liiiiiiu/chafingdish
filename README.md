@@ -3,13 +3,17 @@
 <h1>Chafingdish</h1>
 </div>
 
-为前端开发提供的工具函数，适用于 Web 及微信小程序：
+为前端开发提供的工具函数，适用于 Web 及微信小程序；
+
+与 lodash 等工具函数库的区别在于，lodash 提供了更多更强大专业的工具函数，而 chafingdish 提供了更多在前端业务开发中所需的工具函数；
+
+比如数据类型判断、数据类型转换、处理后端返回的时间金额等字段、生成模拟数据；在开发微信小程序时，使用 Promisify 的API、数据深拷贝、使用封装后的路由、授权函数等，大致功能如下：
 
 1. wow_array，增强版数组，提供切片、批量删除、嵌套等功能；
 2. is 函数用于判断数据类型；
 3. to 函数用于强制转换数据类型；
 4. d  函数用于处理时间；
-5. wx 函数对部分小程序接口进行 Promise 封装，并提供 `wx_router` 路由函数以及 `ResponseView` 视图交互类；
+5. wx 函数对部分小程序接口进行 Promise 封装，并提供 `wx_router` 路由函数、`wx_authorize` 授权函数、`ResponseView` 视图交互类；
 6. 更多功能查看下方示例。
 
 ## 安装
@@ -175,29 +179,32 @@ mock 相关功能函数已被移除
 
 #### wx_router
 
+对微信小程序[路由](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.switchTab.html)接口的封装。
+
+示例如下：
+
 ```javascript
 import { wx_router } from 'chafingdish'
 
-// 获取项目中所有的路由
+// 返回项目中所有的路由信息
 // 根据 app.json 中注册的页面自动生成
 wx_router.routes
 // {
-//   PagesIndex: "/pages/index/index"
-//   PagesLogs: "/pages/logs/logs"
-//   PagesMyIndex: "/pages/my/index/index"
+//   PagesIndex: "/pages/index/index",
+//   PagesLogs: "/pages/logs/logs",
+//   PagesMyIndex: "/pages/my/index/index",
 // }
 
-// 获取当前跳转的路由
+// 返回当前跳转的路由信息
 wx_router.route
 // {
-//   from: "pages/index/index"
-//   params: null
-//   to: "/pages/logs/logs"
+//   from: "pages/index/index",
+//   params: null,
+//   to: "/pages/logs/logs",
 // }
 
 // 调用 wx.navigateTo 或者 wx.switchTab
-// push 会根据页面性质自动调用 wx.navigateTo、wx.switchTab
-
+// push 函数会根据页面性质自动调用 wx.navigateTo、wx.switchTab
 // 传入的路径可以使用简写的方式（不包含最后一层）
 // `/pages/logs/logs` => `PagesLogs`
 wx_router.push('PagesLogs', {
@@ -209,33 +216,88 @@ wx_router.push('PagesLogs', {
 }, (res) => {
   console.log('complete callback', res)
 })
-
 // 也可以写入具体的路径
 wx_router.push('/pages/logs/logs')
-
 // 或者使用 routes 对象的属性
 wx_router.push(wx_router.routes.PagesLogs)
 
 
 // 调用 wx.redirectTo 或者 wx.reLaunch
-
 // 传入的路径参数和 push 函数一样有三种方式
 wx_router.replace('PagesLogs')
-
 // 默认调用 redirectTo，添加 `@relaunch` 标记后使用 wx.reLaunch
 wx_router.replace(`PagesLogs@relaunch`, null, (res: any) => {console.log(res)})
-
 wx_router.replace('/pages/logs/logs')
-
 wx_router.replace(wx_router.routes.PagesLogs)
 
 
 // 调用 wx.navigateBack
-
 wx_router.back()
-
 // 指定返回的页面数
 wx_router.back(2, () => (res: any) => {console.log(res)})
+```
+
+#### wx_authorize
+
+在微信小程序中使用地理位置、相册、摄像头等十多种API前，需要调用对应的授权接口，而且在用户拒绝授权的情况下还需进行二次授权的处理；
+
+wx_authorize 对这些接口所需的授权逻辑进行了封装，仅需调用 `check` `auth` 两个函数即可实现所有授权接口的逻辑。
+
+示例如下：
+
+```html
+<!-- index.html -->
+
+<!-- 在 wxml 中，需要两个按钮分别处理 “已授权” 以及 “拒绝授权” 这两种情况；
+以位置授权为例：可以通过 `userLocationAuth` 来判断是否获得了用户的授权，该变量由 wx_authorize 自动生成、管理 -->
+<button wx:if="{{ userLocationAuth }}" bindtap="getLocation">获取地理位置</button>
+<!-- 当用户 “拒绝授权” 后，想要再次弹出授权框，button按钮必须加上 `openType="openSetting"` 属性 -->
+<button wx:else openType="openSetting" bindopensetting="getLocation">获取地理位置</button>
+```
+
+---
+
+**在逻辑层中，需先调用 `check` 函数检查授权状态，然后调用 `auth` 函数处理授权逻辑；**
+
+> 调用 check 与 auth 函数都需要传入 scope 参数，传入的 scope 需和官方文档的保持一致：[scope 列表](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/authorize.html)
+
+```javascript
+// index.js
+import { wx_authorize } from 'chafingdish'
+
+Page({
+  onLoad() {
+    // 检查是否已授权“地理位置”，并生成 userLocationAuth 变量提供给视图层
+    wx_authorize.check('userLocation')
+
+    // 也可以一次性检查多个授权状态
+    // 检查是否已授权“添加到相册”，并生成 writePhotosAlbumAuth 变量提供给视图层
+    authorize.check('writePhotosAlbum')
+  },
+
+  // 获取地理位置
+  getLocation(e: any) {
+    // auth 函数会根据传入的 e 参数，处理授权相关的一系列逻辑
+    authorize.auth(e, 'userLocation', () => {
+      // 在授权成功后，就可以调用对应接口继续处理业务逻辑
+      wx.getLocation({
+        type: 'wgs84',
+        success: res => {
+          const { latitude, longitude } = res
+          wx.chooseLocation({
+            latitude: latitude,
+            longitude: longitude,
+            success: r => {
+              console.log(r)
+            }
+          })
+        },
+      })
+    }, () => {
+      console.log('userLocation authorize failed')
+    })
+  },
+})
 ```
 
 #### ResponseView
