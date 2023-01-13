@@ -1,9 +1,4 @@
-/**
- * Router for Weapp.
- *
- * 微信小程序跳转API封装
- */
-export declare const wx_router: {
+export interface WxRouter {
     /**
      * 返回项目中所有的路由信息
      *
@@ -96,4 +91,10 @@ export declare const wx_router: {
      * wx_router.back(2, () => (res: any) => {console.log(res)})
      */
     back: (delta?: number, successCallback?: (data?: any) => any, failCallback?: (data?: any) => any, completeCallback?: (data?: any) => any) => any;
-};
+}
+/**
+ * Router for Weapp.
+ *
+ * 微信小程序跳转API封装
+ */
+export declare const wx_router: WxRouter;

@@ -2,10 +2,7 @@ import Check from '../helper/check'
 
 const check = new Check()
 
-/**
- * Only for weapp!
- */
-class WxRouter {
+class Router {
   protected _pages: string[]
   protected _tabbars: string[]
   protected _routes: {
@@ -29,8 +26,8 @@ class WxRouter {
     this._routes = {}
     this._route = null
 
-    WxRouter.TABBAR_TAG = '@tabbar'
-    WxRouter.RELAUNCH_TAG = '@relaunch'
+    Router.TABBAR_TAG = '@tabbar'
+    Router.RELAUNCH_TAG = '@relaunch'
 
     this.pages2Routes()
   }
@@ -42,7 +39,7 @@ class WxRouter {
     const temp: { [key: string]: string } = {}
 
     Object.keys(this._routes).forEach((key: string) => {
-      if (key.indexOf(WxRouter.TABBAR_TAG) === -1) {
+      if (key.indexOf(Router.TABBAR_TAG) === -1) {
         temp[key] = this._routes[key]
       }
     })
@@ -116,18 +113,18 @@ class WxRouter {
 
     // `routes` does not contain `RELAUNCH_TAG`,
     // so, after handle `isRelaunch`, remove `RELAUNCH_TAG` from `path`.
-    let isRelaunch: boolean = path.indexOf(WxRouter.RELAUNCH_TAG) > -1
+    let isRelaunch: boolean = path.indexOf(Router.RELAUNCH_TAG) > -1
     if (isRelaunch) {
-      path = path.replace(WxRouter.RELAUNCH_TAG, '')
+      path = path.replace(Router.RELAUNCH_TAG, '')
     }
 
     // find a matching path from the `routes` after `isRelaunch` settled.
-    let newPath: string = this._routes[path] || this._routes[path + WxRouter.TABBAR_TAG] || path
+    let newPath: string = this._routes[path] || this._routes[path + Router.TABBAR_TAG] || path
 
     // checks if the `path` is a tabbar page.
-    let isTabbar: boolean = (!!this._routes[path + WxRouter.TABBAR_TAG] || path.indexOf(WxRouter.TABBAR_TAG) > -1)
+    let isTabbar: boolean = (!!this._routes[path + Router.TABBAR_TAG] || path.indexOf(Router.TABBAR_TAG) > -1)
 
-    return { newPath: newPath.replace(WxRouter.TABBAR_TAG, ''), isTabbar, isRelaunch }
+    return { newPath: newPath.replace(Router.TABBAR_TAG, ''), isTabbar, isRelaunch }
   }
 
   protected container4Callback(
@@ -196,7 +193,7 @@ class WxRouter {
         // used later to know whether it is a tabbar page.
         if (tabbarRoutes.includes(route)) {
           Object.assign(this._routes, {
-            [route + WxRouter.TABBAR_TAG]: '/' + page
+            [route + Router.TABBAR_TAG]: '/' + page
           })
         }
       }
@@ -333,12 +330,7 @@ class WxRouter {
   }
 }
 
-/**
- * Router for Weapp.
- *
- * 微信小程序跳转API封装
- */
-export const wx_router: {
+export interface WxRouter {
   /**
    * 返回项目中所有的路由信息
    *
@@ -429,4 +421,11 @@ export const wx_router: {
    * wx_router.back(2, () => (res: any) => {console.log(res)})
    */
   back: (delta?: number, successCallback?: (data?: any) => any, failCallback?: (data?: any) => any, completeCallback?: (data?: any) => any) => any
-} = check.exception(() => new WxRouter())
+}
+
+/**
+ * Router for Weapp.
+ *
+ * 微信小程序跳转API封装
+ */
+export const wx_router: WxRouter = check.exception(() => new Router())

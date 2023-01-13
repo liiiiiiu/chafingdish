@@ -1,6 +1,6 @@
 {
   "name": "chafingdish",
-  "version": "1.0.6",
+  "version": "1.0.8",
   "description": "为前端开发提供的工具函数，适用于 Web 及微信小程序",
   "scripts": {
     "dev": "vite",

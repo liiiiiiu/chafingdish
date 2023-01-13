@@ -1,12 +1,5 @@
 export declare type ScopeNameType = 'userLocation' | 'userLocationBackground' | 'record' | 'camera' | 'bluetooth' | 'writePhotosAlbum' | 'addPhoneContact' | 'addPhoneCalendar' | 'werun';
-/**
- * 微信小程序授权接口封装
- *
- * 在微信小程序中使用地理位置、相册、摄像头等十多种API前，需要调用对应的授权接口，而且在用户拒绝授权的情况下还需进行二次授权的处理；
- *
- * wx_authorize 对这些接口所需的授权逻辑进行了封装，仅需调用 `check` `auth` 两个函数即可实现所有授权接口的逻辑。
- */
-export declare const wx_authorize: {
+export interface WxAuthorize {
     /**
      * 检查用户对当前 scope 的授权状态。
      *
@@ -26,4 +19,12 @@ export declare const wx_authorize: {
      * @param {Function} failCallback 授权失败的回调函数
      */
     auth: (e: any, scopeName: 'userLocation' | 'userLocationBackground' | 'record' | 'camera' | 'bluetooth' | 'writePhotosAlbum' | 'addPhoneContact' | 'addPhoneCalendar' | 'werun', successCallback?: Function, failCallback?: Function) => undefined;
-};
+}
+/**
+ * 微信小程序授权接口封装
+ *
+ * 在微信小程序中使用地理位置、相册、摄像头等十多种API前，需要调用对应的授权接口，而且在用户拒绝授权的情况下还需进行二次授权的处理；
+ *
+ * wx_authorize 对这些接口所需的授权逻辑进行了封装，仅需调用 `check` `auth` 两个函数即可实现所有授权接口的逻辑。
+ */
+export declare const wx_authorize: WxAuthorize;

@@ -1252,20 +1252,20 @@ var wx$1 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   wx_file_info_sync: wx_file_info_sync$1
 }, Symbol.toStringTag, { value: "Module" }));
 const check$2 = new Check();
-class WxRouter {
+class Router {
   constructor() {
     this._pages = __wxConfig && __wxConfig.pages || [];
     this._tabbars = __wxConfig && __wxConfig.tabBar && __wxConfig.tabBar.list && __wxConfig.tabBar.list.length && __wxConfig.tabBar.list.map((_) => _.pagePath) || [];
     this._routes = {};
     this._route = null;
-    WxRouter.TABBAR_TAG = "@tabbar";
-    WxRouter.RELAUNCH_TAG = "@relaunch";
+    Router.TABBAR_TAG = "@tabbar";
+    Router.RELAUNCH_TAG = "@relaunch";
     this.pages2Routes();
   }
   get routes() {
     const temp = {};
     Object.keys(this._routes).forEach((key) => {
-      if (key.indexOf(WxRouter.TABBAR_TAG) === -1) {
+      if (key.indexOf(Router.TABBAR_TAG) === -1) {
         temp[key] = this._routes[key];
       }
     });
@@ -1307,13 +1307,13 @@ class WxRouter {
   }
   path2Check(path) {
     path = path + "";
-    let isRelaunch = path.indexOf(WxRouter.RELAUNCH_TAG) > -1;
+    let isRelaunch = path.indexOf(Router.RELAUNCH_TAG) > -1;
     if (isRelaunch) {
-      path = path.replace(WxRouter.RELAUNCH_TAG, "");
+      path = path.replace(Router.RELAUNCH_TAG, "");
     }
-    let newPath = this._routes[path] || this._routes[path + WxRouter.TABBAR_TAG] || path;
-    let isTabbar = !!this._routes[path + WxRouter.TABBAR_TAG] || path.indexOf(WxRouter.TABBAR_TAG) > -1;
-    return { newPath: newPath.replace(WxRouter.TABBAR_TAG, ""), isTabbar, isRelaunch };
+    let newPath = this._routes[path] || this._routes[path + Router.TABBAR_TAG] || path;
+    let isTabbar = !!this._routes[path + Router.TABBAR_TAG] || path.indexOf(Router.TABBAR_TAG) > -1;
+    return { newPath: newPath.replace(Router.TABBAR_TAG, ""), isTabbar, isRelaunch };
   }
   container4Callback(successCallback, failCallback, completeCallback) {
     return {
@@ -1358,7 +1358,7 @@ class WxRouter {
         });
         if (tabbarRoutes.includes(route)) {
           Object.assign(this._routes, {
-            [route + WxRouter.TABBAR_TAG]: "/" + page
+            [route + Router.TABBAR_TAG]: "/" + page
           });
         }
       }
@@ -1397,7 +1397,7 @@ class WxRouter {
     });
   }
 }
-const wx_router$1 = check$2.exception(() => new WxRouter());
+const wx_router$1 = check$2.exception(() => new Router());
 var wxRouter = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   wx_router: wx_router$1
