@@ -6,9 +6,9 @@ const rint = /^-?\d+$/
 
 const rposInt = /^\d+$/
 
-const rdecimal = /^\d{1,10}([.]\d{2}){1}$/
+const rdecimal = /^(-?\d+)([.]\d+){1}$/
 
-const rposDecimal = /^\d+(\.\d{0,2})?$/
+const rposDecimal = /^\d+([.]\d+){1}$/
 
 const rmobilephone = /^1[3456789][0-9]{9}$/
 

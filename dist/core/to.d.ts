@@ -127,7 +127,7 @@ export declare function to_symbol(value: unknown): Symbol;
  *
  * @returns {undefined} Converted value.
  */
-export declare function to_undefined(): undefined;
+export declare function to_undefined(value?: unknown): undefined;
 /**
  * Convert value to null.
  *
@@ -135,7 +135,7 @@ export declare function to_undefined(): undefined;
  *
  * @returns {null} Converted value.
  */
-export declare function to_null(): null;
+export declare function to_null(value?: unknown): null;
 /**
  * Convert value to pinyin.
  *

@@ -188,7 +188,7 @@ export function to_symbol(value: unknown): Symbol {
  *
  * @returns {undefined} Converted value.
  */
-export function to_undefined(): undefined {
+export function to_undefined(value?: unknown): undefined {
   return cast.undef()
 }
 
@@ -199,7 +199,7 @@ export function to_undefined(): undefined {
  *
  * @returns {null} Converted value.
  */
-export function to_null(): null {
+export function to_null(value?: unknown): null {
   return cast.nul()
 }
 

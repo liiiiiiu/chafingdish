@@ -36,23 +36,35 @@ import * as utils from 'chafingdish'
 
 #### wow_array
 
+wow_array 对原生数组类型进行了扩展
+
 ```javascript
-let arr = wow_array([1, 2, 3])
+const arr = wow_array([1, 2, 3])
+
+// 取值
 arr[0] // 1
 arr[-1] // 3
 arr.first // 1
 arr.last // 3
+// 参考 Python 的列表取值
 arr['1:'] // [2, 3]
 arr['1:2'] // [2]
 arr[':'] // [1, 2, 3]
 arr['1:3:2'] // [2]
 arr['::'] // [1, 2, 3]
 arr['::-1'] // [3, 2, 1]
+
+// 最小、最大值
 arr.min // 1
 arr.max // 3
+
+// 批量删除，可以传入索引、函数
 arr.remove(0, val => val === 3) // [2]
+
+// 打乱顺序
 arr.shuffle // [1, 3, 2]
 
+// 嵌套数组，用于处理多级分类等
 const nestArr = wow_array([
   { id: 1, parent_id: null },
   { id: 2, parent_id: 1 },
@@ -95,66 +107,249 @@ nestArr.nest(null, 'parent_id')
 
 ### is
 
-|     is_   |     usage    | result |
-|    ---    |      ---     |  ----  |
-| is_string | is_string(0) |  false |
-| is_number | is_number(0) |  true  |
-| is_integer | is_integer(0) |  true |
-| is_positive_integer | is_positive_integer(-1) |  false |
-| is_float | is_float(0) |  false |
-| is_positive_float | is_positive_float(1.1) |  true |
-| is_boolean | is_boolean(0) |  false |
-| is_array | is_array([]) |  true |
-| is_array_like | is_array_like([]) |  true |
-| is_object | is_object([]) / is_object({}) |  true / true |
-| is_plain_object | is_object([]) / is_object({}) |  false / true |
-| is_object_like | is_object_like({}) |  true |
-| is_symbol | is_symbol(0) |  false |
-| is_function | is_function(0) |  false |
-| is_NaN | is_NaN(0) |  false |
-| is_undefined | is_undefined(0) |  false |
-| is_null | is_null(undefined) |  false |
-| is_length | is_length([1, 2].length) |  true |
-| is_arguments | is_arguments(0) |  false |
-| is_error | is_error(0) |  false |
-| is_leap_year | is_leap_year(2022) |  false |
-| is_email | is_email('123@qq.com') |  true |
-| is_url | is_url('https://www.abc.com') |  true |
-| is_cn_phone_number | is_cn_phone_number(18888888888) |  true |
-| is_cn_id_card | is_cn_id_card(123) |  false |
+is 函数用于判断数据类型
+
+#### 常规判断
+
+```javascript
+// 是否为字符串
+is_string(1) // false
+is_string('1') // true
+
+// 是否为数字
+is_number(1) // true
+is_number('1') // false
+is_number(NaN) // true
+
+// 是否为整数
+is_integer(1) // true
+is_integer(1.1) // false
+
+// 是否为正整数
+is_positive_integer(1) // true
+is_positive_integer(-1) // false
+
+// 是否为浮点数
+is_float(1) // false
+is_float(1.) // false
+is_float(1.1) // true
+is_float(-1.1) // true
+
+// 是否为正浮点数
+is_positive_float(1) // false
+is_positive_float(1.) // false
+is_positive_float(1.1) // true
+is_positive_float(-1.1) // false
+
+// 是否为布尔值
+is_boolean(true) // true
+is_boolean(false) // true
+is_boolean('true') // false
+is_boolean(1) // false
+
+// 是否为数组、类数组、arguments
+is_array([]) // true
+function foo() {
+  console.log(is_array(arguments)) // false
+  console.log(is_array_like(arguments)) // true
+  console.log(is_arguments(arguments)) // true
+}
+foo()
+
+// 是否为对象、纯对象
+is_object({}) // true
+is_object([]) // true
+is_object(new Map()) // true
+is_object(new Set()) // true
+is_plain_object({}) // true
+is_plain_object([]) // false
+is_plain_object(new Map()) // false
+is_plain_object(new Set()) // false
+
+// 是否为 Symbol 类型
+is_symbol(1) // false
+is_symbol(Symbol(1)) // true
+
+// 是否为函数
+is_function({}) // false
+is_function(() => {}) // true
+is_function(Array) true
+
+// 是否为 NaN
+is_NaN(1) // false
+is_NaN(NaN) // true
+
+// 是否为 undefined
+is_undefined(0) // false
+is_undefined('0') // false
+is_undefined(undefined) // true
+is_undefined(null) // false
+
+// 是否为 null
+is_null(0) // false
+is_null('0') // false
+is_null(undefined) // false
+is_null(null) // true
+
+// 是否为 Error
+is_error(new Error) // true
+try {
+  const a = 1
+  a = 2
+} catch (error) {
+  console.log(is_error(error)) // true
+}
+```
+
+#### 业务判断
+
+```javascript
+// 是否为闰年
+is_leap_year(2022) // false
+is_leap_year(2024) // true
+
+// 是否为邮箱
+is_email('123@qq.com') // true
+
+// 是否为 URL
+is_url('https://www.abc.com') // true
+is_url('http://www.abc.com') // true
+is_url("www.abc.com/img.png") // true
+is_url('www.abc.com') // true
+is_url('abc.com') // true
+is_url('127.0.0.1') // true
+
+// 是否为国内手机号
+is_cn_phone_number(18888888888) // true
+is_cn_phone_number(86193888) // false
+
+// 是否为国内身份证号码
+is_cn_id_card(111222333444555666) // false
+```
 
 ### to
 
-|     to_   |     usage    | result |
-|    ---    |      ---     |  ----  |
-| to_string | to_string(0) |  '0' |
-| to_number | to_number('1') |  1  |
-| to_integer | to_integer(1.6, false) / to_integer(1.6, true) |  1 / 2 |
-| to_float | to_float(1.256, 1, false) / to_float(1.256, 2, true) |  '1.2' / '1.26' |
-| to_cn_cent | to_cn_cent(190.50) / to_cn_cent(19050, false, true) |  19050 / '190.50' |
-| to_boolean | to_boolean(0) | false |
-| to_array | to_array(0) / to_array('1, 2, 3') | [0] / [1, 2, 3] |
-| to_symbol | to_symbol(0) | Symbol(0) |
-| to_undefined | to_undefined() | undefined |
-| to_null | to_null |  null |
-| to_cn_pinyin | to_cn_pinyin('你好') | ['NH'] |
+to 函数用于强制转换数据类型
+
+#### 常规转换
+
+```javascript
+// 转换为字符串
+to_string(1) // '1'
+to_string(true) // 'true'
+to_string(NaN) // 'NaN'
+to_string(undefined) // 'undefined'
+to_string(null) // 'null'
+
+// 转换为数字
+to_number('1') // 1
+to_number(true) // 1
+to_number(NaN) // 0
+to_number(undefined) // 0
+to_number(null) // 0
+
+// 转换为整数
+// 第2个参数用于判断是否需要四舍五入
+to_integer('1.5') // 1
+to_integer(1.5, false) // 1
+to_integer(1.5, true) // 2
+
+// 转换为1~2位浮点数
+// 第2个参数用于判断保留1位还是2位小数
+// 第3个参数用于判断是否需要四舍五入
+to_float(1.256) // 1.25
+to_float(1.256, 1, false) // 1.2
+to_float(1.256, 2, false) // 1.25
+to_float(1.256, 2, true) // 1.26
+
+// 转换为布尔值
+to_boolean(0) // false
+to_boolean('0') // true
+to_boolean(true) // true
+to_boolean(NaN) // false
+to_boolean(undefined) // false
+to_boolean(null) // false
+
+// 转换为数组
+to_array(1) // [1]
+to_array({}) // [{}]
+to_array('1, 2, 3') // ['1', '2', '3']
+
+// 转换为 Symbol
+to_symbol(1) // Symbol(1)
+
+// 转换为 undefined
+to_undefined() // undefined
+to_undefined(1) // undefined
+to_undefined(null) // undefined
+
+// 转换为 null
+to_null() // null
+to_null(1) // null
+to_null(undefined) // null
+```
+
+#### 业务转换
+
+```javascript
+// 中文首字母转拼音
+to_cn_pinyin('你好') // ['NH']
+
+// 人民币元转分
+// 第2个参数用于判断是否需要四舍五入
+to_cn_cent(1.567) // 156
+to_cn_cent(1.567, true) // 157
+// 人民币分转元
+// 要使用分转元，第2个参数需设为 false，第3个参数需设为 true，第4个参数用于判断保留1位还是2位小数
+to_cn_cent(156, false, true) // '1.56'
+to_cn_cent(156, false, true, 2) // '1.56'
+to_cn_cent(156, false, true, 1) // '1.6'
+to_cn_cent(156, false, true, 0) // 1.56
+```
 
 ### date
 
-|     d_   |     usage    | result |
-|    ---    |      ---     |  ----  |
-| d_day | d_day().date() | 参考：[Day.js](https://dayjs.fenxianglu.cn/)  |
-| d_timestamp | d_timestamp() |  1656571581142 |
-| d_format | d_format() |  '2022-06-30 14:45:15' |
-| d_format_YMD | d_format_YMD() |  '2022-06-30'  |
-| d_diff |  d_diff('2022-07-10', '2022-07-03') |  7  |
+d 函数用于处理时间
+
+#### d_day()
+
+直接使用 [Day.js](https://dayjs.fenxianglu.cn/) 的相关函数
+
+> d_day().date()
+
+---
+
+```javascript
+// 获取当前时间或传入时间的时间戳
+d_timestamp() // 1656571581142
+d_timestamp('2022-07-03 14:45:15') // 1656819176086
+
+// 格式化当前时间或传入的时间
+d_format() // '2022-07-03 14:45:15'
+d_format(Date.now()) // '2022-07-03 14:45:15'
+d_format(1656819176086) // '2022-07-03 11:32:56'
+
+// 格式化当前时间或传入的时间（只保留年月日）
+d_format_YMD() // '2022-07-03'
+d_format_YMD(1656819176086) // '2022-07-03'
+
+// 获取两个时间的时间差
+d_diff('2022-07-10', '2022-07-03') // 7
+d_diff('2022-07-10', '2022-07-03', 'day') // 7
+```
 
 ### gen
 
-|     gen_   |     usage    | result |
-|    ---    |      ---     |  ----  |
-| gen_uuid | gen_uuid() |  '3e479fc2-ab2e-42bc-85f3-c592be4e0cb4' |
-| gen_random_integer | gen_random_integer() / gen_random_integer(20, 30) |  3 / 25 |
+gen 函数用于生成一些特殊的值
+
+```javascript
+// 生成 uuid
+gen_uuid() // '3e479fc2-ab2e-42bc-85f3-c592be4e0cb4'
+
+// 生成随机整数
+gen_random_integer() // 3
+gen_random_integer(20, 30) // 25
+```
 
 ### mock
 
@@ -164,18 +359,36 @@ mock 相关功能函数已被移除
 
 ### wx
 
-***仅支持微信小程序***
+***仅支持在微信小程序中使用***
 
-|     wx_   |     usage    | result |
-|    ---    |      ---     |  ----  |
-| wx_clone_deep | wx_clone_deep([1, 2, 3]) |  [1, 2, 3] |
-| wx_dataset | wx_dataset(e) |  e.currentTarget.dataset => {} |
-| wx_promisify | wx_promisify(wx.getImageInfo) |   |
-| wx_window_width | wx_window_width() | 375  |
-| wx_window_height | wx_window_height() |  555 |
-| wx_window_pixel_ratio | wx_window_pixel_ratio() |  2 |
-| wx_image_info_sync | wx_image_info_sync(path) |   |
-| wx_file_info_sync | wx_file_info_sync(path) |   |
+```javascript
+// 深拷贝
+wx_clone_deep([1, 2, 3]) // [1, 2, 3]
+
+// 解析按钮传递的 e 值
+// <button data-id="{{ 1 }}" bindtap="onClick" />
+function onClick(e) {
+  const id = wx_dataset(e)['id']
+}
+
+// 接口同步化
+const res = wx_promisify(wx.getImageInfo)
+// 等同于
+// wx.getImageInfo({
+//   src: '',
+//   success: res => {}
+// })
+
+// 获取设备窗口宽度、高度、像素比
+// 可用于 canvas 生成海报等场景
+wx_window_width() // 375
+wx_window_height() // 555
+wx_window_pixel_ratio() // 2
+
+// 获取图片、文件信息的同步写法
+const res1 = wx_image_info_sync(path)
+const res2 = wx_file_info_sync(path)
+```
 
 #### wx_router
 
@@ -272,13 +485,13 @@ Page({
 
     // 也可以一次性检查多个授权状态
     // 检查是否已授权“添加到相册”，并生成 writePhotosAlbumAuth 变量提供给视图层
-    authorize.check('writePhotosAlbum')
+    wx_authorize.check('writePhotosAlbum')
   },
 
   // 获取地理位置
   getLocation(e: any) {
     // auth 函数会根据传入的 e 参数，处理授权相关的一系列逻辑
-    authorize.auth(e, 'userLocation', () => {
+    wx_authorize.auth(e, 'userLocation', () => {
       // 在授权成功后，就可以调用对应接口继续处理业务逻辑
       wx.getLocation({
         type: 'wgs84',
@@ -299,6 +512,8 @@ Page({
   },
 })
 ```
+
+> 使用定位等接口时，需要在 app.json 中配置 `permission` `requiredPrivateInfos` 等字段
 
 #### ResponseView
 
