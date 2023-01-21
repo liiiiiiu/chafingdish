@@ -3,6 +3,8 @@
 <h1>Chafingdish</h1>
 </div>
 
+**新春快乐！**
+
 为前端开发提供的工具函数，适用于 Web 及微信小程序；
 
 与 lodash 等工具函数库的区别在于，lodash 提供了更多更强大专业的工具函数，而 chafingdish 提供了更多在前端业务开发中所需的工具函数；
@@ -14,7 +16,7 @@
 3. to 函数用于强制转换数据类型；
 4. d  函数用于处理时间；
 5. wx 函数对部分小程序接口进行 Promise 封装，并提供 `wx_router` 路由函数、`wx_authorize` 授权函数、`ResponseView` 视图交互类；
-6. 更多功能查看下方示例。
+6. 更多功能查看下方示例
 
 ## 安装
 
@@ -34,9 +36,11 @@ import * as utils from 'chafingdish'
 
 ### wow
 
+wow 函数对常用的数据结构进行了扩展
+
 #### wow_array
 
-wow_array 对原生数组类型进行了扩展
+数组是使用率很高的数据类型，wow_array 对数组类型进行了扩展，提供了更便利的取值、删除等操作
 
 ```javascript
 const arr = wow_array([1, 2, 3])
@@ -368,10 +372,10 @@ wx_clone_deep([1, 2, 3]) // [1, 2, 3]
 // 解析按钮传递的 e 值
 // <button data-id="{{ 1 }}" bindtap="onClick" />
 function onClick(e) {
-  const id = wx_dataset(e)['id']
+  const id = wx_dataset(e)['id'] // 1
 }
 
-// 接口同步化
+// 接口同步写法
 const res = wx_promisify(wx.getImageInfo)
 // 等同于
 // wx.getImageInfo({
@@ -392,7 +396,7 @@ const res2 = wx_file_info_sync(path)
 
 #### wx_router
 
-对微信小程序[路由](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.switchTab.html)接口的封装。
+对微信小程序[路由](https://developers.weixin.qq.com/miniprogram/dev/api/route/wx.switchTab.html)接口的封装
 
 示例如下：
 
@@ -454,7 +458,7 @@ wx_router.back(2, () => (res: any) => {console.log(res)})
 
 在微信小程序中使用地理位置、相册、摄像头等十多种API前，需要调用对应的授权接口，而且在用户拒绝授权的情况下还需进行二次授权的处理；
 
-wx_authorize 对这些接口所需的授权逻辑进行了封装，仅需调用 `check` `auth` 两个函数即可实现所有授权接口的逻辑。
+wx_authorize 对这些接口所需的授权逻辑进行了封装，仅需调用 `check` `auth` 两个函数即可实现所有授权接口的逻辑
 
 示例如下：
 
@@ -521,7 +525,7 @@ Page({
 
 这里的数据绑定包括 “渲染数据” “是否为空数据” “全部数据是否加载完毕” “分页数” 等;
 
-并且可以自动处理下拉刷新，触底加载的相关逻辑，完成数据从请求、加载、处理到最终渲染的一整套逻辑。
+并且可以自动处理下拉刷新，触底加载的相关逻辑，完成数据从请求、加载、处理到最终渲染的一整套逻辑
 
 示例如下：
 

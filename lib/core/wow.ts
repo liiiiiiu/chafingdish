@@ -226,40 +226,6 @@ function arrayNest(target: any[]) {
   }
 }
 
-/**
- * Wow array, better array!
- *
- * See example.
- *
- * @param {Object} value Initial array.
- *
- * @returns {WowArrayType} Wow array.
- *
- * @example
- *
- * [1, 2, 3][-1] // 3
- * [1, 2, 3].first // 1
- * [1, 2, 3].last // 3
- * [1, 2, 3]['1:'] // [2, 3]
- * [1, 2, 3]['1:2'] // [2]
- * [1, 2, 3][':'] // [1, 2, 3]
- * [1, 2, 3]['1:3:2'] // [2]
- * [1, 2, 3]['::'] // [1, 2, 3]
- * [1, 2, 3]['::-1'] // [3, 2, 1]
- * [1, 2, 3].min // 1
- * [1, 2, 3].max // 3
- * [1, 2, 3].remove(0, val => val === 3) // [2]
- * [1, 2, 3].shuffle // [1, 3, 2]
- *
- * const nestArr = wow_array([
- *  { id: 1, parent_id: null },
- *  { id: 2, parent_id: 1 },
- *  { id: 3, parent_id: 1 },
- *  { id: 4, parent_id: 2 },
- *  { id: 5, parent_id: 4 }
- * ])
- * nestArr.nest(null, 'parent_id')
- */
 export function wow_array(value: object): WowArrayType {
   if (check.undef(value) || !check.arr(value)) {
     value = cast.arr(value)

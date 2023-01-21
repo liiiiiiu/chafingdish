@@ -3,7 +3,6 @@ import { defineConfig } from 'vite'
 const path = require('path')
 
 // https://vitejs.dev/config/
-console.log('__dirname', __dirname)
 export default defineConfig({
   server: {
     port: 3012
@@ -13,7 +12,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'lib/chafingdish.ts'),
-      name: 'ToolMen',
+      name: 'Chafingdish',
       // the proper extensions will be added
       fileName: 'chafingdish'
     },

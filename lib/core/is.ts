@@ -286,8 +286,6 @@ export function is_url(value: unknown): boolean {
 /**
  * Checks if value is phone number.
  *
- * Only for cn!
- *
  * @param {Object} value The value to check.
  *
  * @returns {boolean} Return true if value is phone number, otherwise false.
@@ -299,12 +297,21 @@ export function is_cn_phone_number(value: unknown): boolean {
 /**
  * Checks if value is id card.
  *
- * Only for cn!
- *
  * @param {Object} value The value to check.
  *
  * @returns {boolean} Return true if value is id card, otherwise false.
  */
 export function is_cn_id_card(value: unknown): boolean {
   return rcnIdCard.test(value + '')
+}
+
+/**
+ * Checks if value is falsy.
+ *
+ * @param {Object} value The value to check.
+ *
+ * @returns {boolean} Return true if value is falsy, otherwise false.
+ */
+export function is_falsy(value: any): boolean {
+  return [false, '', 0, -0, undefined, null, NaN].includes(value)
 }
