@@ -1,5 +1,5 @@
 // index.ts
-import { wx_router, wx_authorize } from 'chafingdish'
+import { wx_router, wx_authorize, is_undefined, is_null } from 'chafingdish'
 
 Page({
   data: {
@@ -37,5 +37,24 @@ Page({
 
   testWxRouter() {
     wx_router.push('PagesTest1')
+  },
+
+  wx_dataset(e: any, key?: string | number) {
+    if (e?.currentTarget?.dataset) {
+      const dataset = e.currentTarget.dataset
+
+      if (is_undefined(key) || is_null(key)) return dataset
+
+      return dataset[key as string | number] ?? undefined
+    }
+
+    return null
+  },
+  onDataset(e: any) {
+    console.log('onDataset', this.wx_dataset(e), this.wx_dataset(e)[0])
+  },
+
+  wx_refresh_data() {
+
   }
 })

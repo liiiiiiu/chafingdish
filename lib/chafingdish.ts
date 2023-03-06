@@ -33,11 +33,16 @@ export const {
   is_length,
   is_arguments,
   is_error,
+  is_falsy,
+
   is_leap_year,
   is_email,
   is_url,
   is_cn_phone_number,
-  is_cn_id_card
+  is_cn_id_card,
+  is_today,
+  is_today_before,
+  is_today_after
 } = is
 
 export const {
@@ -50,6 +55,7 @@ export const {
   to_symbol,
   to_undefined,
   to_null,
+
   to_cn_cent,
   to_cn_pinyin
 } = to
@@ -61,11 +67,13 @@ export const {
 
 export const {
   d_day,
+
   d_time,
   d_timestamp,
   d_format,
   d_format_YMD,
-  d_diff
+  d_diff,
+  d_dates_in_month
 } = date
 
 export const {

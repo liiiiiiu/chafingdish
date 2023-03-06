@@ -206,3 +206,27 @@ export declare function is_cn_id_card(value: unknown): boolean;
  * @returns {boolean} Return true if value is falsy, otherwise false.
  */
 export declare function is_falsy(value: any): boolean;
+/**
+ * Checks if date is today.
+ *
+ * @param {Object} value The date to check.
+ *
+ * @returns {boolean} Return true if date is today, otherwise false.
+ */
+export declare function is_today(value?: string | number): boolean;
+/**
+ * Checks if date is before today.
+ *
+ * @param {Object} value The date to check.
+ *
+ * @returns {boolean} Return true if date is before today, otherwise false.
+ */
+export declare function is_today_before(value?: string | number): boolean;
+/**
+ * Checks if date is after today.
+ *
+ * @param {Object} value The date to check.
+ *
+ * @returns {boolean} Return true if date is after today, otherwise false.
+ */
+export declare function is_today_after(value?: string | number): boolean;

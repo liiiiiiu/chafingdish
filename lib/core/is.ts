@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 import Check from '../helper/check'
 
 const check = new Check()
@@ -314,4 +316,49 @@ export function is_cn_id_card(value: unknown): boolean {
  */
 export function is_falsy(value: any): boolean {
   return [false, '', 0, -0, undefined, null, NaN].includes(value)
+}
+
+/**
+ * Checks if date is today.
+ *
+ * @param {Object} value The date to check.
+ *
+ * @returns {boolean} Return true if date is today, otherwise false.
+ */
+export function is_today(value?: string | number): boolean {
+  try {
+    return dayjs().format('YYYY-MM-DD') === dayjs(value).format('YYYY-MM-DD')
+  } catch (error) {
+    return false
+  }
+}
+
+/**
+ * Checks if date is before today.
+ *
+ * @param {Object} value The date to check.
+ *
+ * @returns {boolean} Return true if date is before today, otherwise false.
+ */
+export function is_today_before(value?: string | number): boolean {
+  try {
+    return dayjs(dayjs(value).format('YYYY-MM-DD')).diff(dayjs().format('YYYY-MM-DD'), 'day') < 0
+  } catch (error) {
+    return false
+  }
+}
+
+/**
+ * Checks if date is after today.
+ *
+ * @param {Object} value The date to check.
+ *
+ * @returns {boolean} Return true if date is after today, otherwise false.
+ */
+export function is_today_after(value?: string | number): boolean {
+  try {
+    return dayjs(dayjs(value).format('YYYY-MM-DD')).diff(dayjs().format('YYYY-MM-DD'), 'day') > 0
+  } catch (error) {
+    return false
+  }
 }

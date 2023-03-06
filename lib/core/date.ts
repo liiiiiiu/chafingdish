@@ -109,7 +109,7 @@ export function d_format_YMD(value?: string | number, separator: string = '-'): 
  * see: https://dayjs.fenxianglu.cn/category/display.html#%E6%97%A5%E5%8E%86%E6%97%B6%E9%97%B4
  *
  * @param {string|number} value1 Timestamp or date.
- * @param {string|number} value12 Timestamp or date.
+ * @param {string|number} value2 Timestamp or date.
  * @param {UnitType} unit The specified unit.
  *
  * @returns {string} Formatted date, including only the year, month and day.
@@ -122,4 +122,30 @@ export function d_diff(value1: string | number, value2: string | number, unit: U
   const date1 = dayjs(value1)
 
   return date1.diff(value2, unit)
+}
+
+/**
+ * Get the dates in month.
+ *
+ * @param {string|number} value Timestamp or date.
+ * @param {UnitType} formatter Value formatter, same as dayjs formatter.
+ *
+ * @returns {string} Formatted dates in month.
+ *
+ * @example
+ *
+ * d_dates_in_month() // ['2023-03-01T16:50:26+08:00', '2023-03-02T16:50:26+08:00', '2023-03-03T16:50:26+08:00', '2023-03-04T16:50:26+08:00', ..., '2023-03-31T16:51:15+08:00']
+ */
+export function d_dates_in_month(value?: string | number, formatter?: string) {
+  const days = dayjs(value).daysInMonth()
+  const dates: string[] = []
+  let i = 1
+
+  while (i <= days) {
+    dates.push(dayjs(value).date(i).format(formatter))
+
+    i++
+  }
+
+  return dates
 }

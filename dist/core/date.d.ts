@@ -59,7 +59,7 @@ export declare function d_format_YMD(value?: string | number, separator?: string
  * see: https://dayjs.fenxianglu.cn/category/display.html#%E6%97%A5%E5%8E%86%E6%97%B6%E9%97%B4
  *
  * @param {string|number} value1 Timestamp or date.
- * @param {string|number} value12 Timestamp or date.
+ * @param {string|number} value2 Timestamp or date.
  * @param {UnitType} unit The specified unit.
  *
  * @returns {string} Formatted date, including only the year, month and day.
@@ -69,3 +69,16 @@ export declare function d_format_YMD(value?: string | number, separator?: string
  * d_diff('2022-07-10', '2022-07-03') // 7
  */
 export declare function d_diff(value1: string | number, value2: string | number, unit?: UnitType): number;
+/**
+ * Get the dates in month.
+ *
+ * @param {string|number} value Timestamp or date.
+ * @param {UnitType} formatter Value formatter, same as dayjs formatter.
+ *
+ * @returns {string} Formatted dates in month.
+ *
+ * @example
+ *
+ * d_dates_in_month() // ['2023-03-01T16:50:26+08:00', '2023-03-02T16:50:26+08:00', '2023-03-03T16:50:26+08:00', '2023-03-04T16:50:26+08:00', ..., '2023-03-31T16:51:15+08:00']
+ */
+export declare function d_dates_in_month(value?: string | number, formatter?: string): string[];

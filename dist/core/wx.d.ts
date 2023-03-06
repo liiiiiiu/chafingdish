@@ -17,7 +17,7 @@ export declare function wx_clone_deep(value: any): any;
  *
  * @returns {any} `e.currentTarget.dataset`.
  */
-export declare function wx_dataset(e: any): any;
+export declare function wx_dataset(e: any, key?: string | number): any;
 /**
  * Only for weapp!
  *

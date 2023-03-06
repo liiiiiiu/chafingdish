@@ -1,13 +1,14 @@
-<div align=center>
-<img src="https://img.icons8.com/cotton/64/null/chili-pepper--v1.png">
-<h1>Chafingdish</h1>
-</div>
+# Chafingdish
 
 为前端开发提供的工具函数，适用于 Web 及微信小程序；
 
 与 lodash 等工具函数库的区别在于，lodash 提供了更多更强大专业的工具函数，而 chafingdish 提供了更多在前端业务开发中所需的工具函数；
 
-比如数据类型判断、数据类型转换、处理后端返回的时间金额等字段、生成模拟数据；在开发微信小程序时，使用 Promisify 的API、数据深拷贝、使用封装后的路由、授权函数等，大致功能如下：
+比如基础的数据类型判断，数据类型转换，处理后端返回的时间、金额等字段，生成模拟数据等；
+
+在开发微信小程序时，可以使用更便捷的 Promisify API，使用对 `wx.switchTab` `wx.reLaunch` `wx.redirectTo` `wx.navigateTo` `wx.navigateBack` 进行一致性封装的 `wx_router` 路由函数，对地理位置、相册、摄像头等十多种API进行统一封装 `wx_authorize` 授权函数等；
+
+大致功能如下：
 
 1. wow_array，增强版数组，提供切片、批量删除、嵌套等功能；
 2. is 函数用于判断数据类型；
@@ -201,6 +202,13 @@ try {
 } catch (error) {
   console.log(is_error(error)) // true
 }
+
+// 是否为假值
+is_falsy(0) // true
+is_falsy(-0) // true
+is_falsy(undefined) // true
+is_falsy(NaN) // true
+is_falsy('0') // false
 ```
 
 #### 业务判断
@@ -227,6 +235,16 @@ is_cn_phone_number(86193888) // false
 
 // 是否为国内身份证号码
 is_cn_id_card(111222333444555666) // false
+
+// 输入日期是否为今天
+is_today('2022-07-10') // false
+is_today(1656819176086) // false
+// 输入日期是否在今天之前
+is_today_before('2022-07-10') // true
+is_today_before(1656819176086) // true
+// 输入日期是否在今天之后
+is_today_after('2022-07-10') // false
+is_today_after(1656819176086) // false
 ```
 
 ### to
@@ -338,6 +356,9 @@ d_format_YMD(1656819176086) // '2022-07-03'
 // 获取两个时间的时间差
 d_diff('2022-07-10', '2022-07-03') // 7
 d_diff('2022-07-10', '2022-07-03', 'day') // 7
+
+// 获取输入日期所处月份包含的所有日期
+d_dates_in_month() // ['2023-03-01T16:50:26+08:00', '2023-03-02T16:50:26+08:00', '2023-03-03T16:50:26+08:00', '2023-03-04T16:50:26+08:00', ..., '2023-03-31T16:51:15+08:00']
 ```
 
 ### gen
@@ -368,9 +389,12 @@ mock 相关功能函数已被移除
 wx_clone_deep([1, 2, 3]) // [1, 2, 3]
 
 // 解析按钮传递的 e 值
-// <button data-id="{{ 1 }}" bindtap="onClick" />
+// <button data-id="{{ 1 }}" data-age="{{ 12 }}" bindtap="onClick" />
 function onClick(e) {
-  const id = wx_dataset(e)['id'] // 1
+  let id = wx_dataset(e)['id'] // 1
+
+  // 或者
+  id = wx_dataset(e, 'age') // 12
 }
 
 // 接口同步写法
@@ -657,3 +681,21 @@ export async funtion deleteUser() {
   }
 }
 ```
+
+## Changelog
+
+### v1.0.12
+
+新增 `is_falsy` 函数，用于判断输入值是否为假值
+
+新增 `is_today` 函数，用于判断输入日期是否为今天
+
+新增 `is_today_before` 函数，用于判断输入日期是否在今天之前
+
+新增 `is_today_after` 函数，用于判断输入日期是否在今天之后
+
+新增 `d_dates_in_month` 函数，用于获取输入日期所处月份包含的所有日期
+
+---
+
+优化 `wx_dataset` 函数写法

@@ -24,8 +24,18 @@ export function wx_clone_deep(value: any): any {
  *
  * @returns {any} `e.currentTarget.dataset`.
  */
-export function wx_dataset(e: any): any {
-  return check.exception(() => e?.currentTarget?.dataset ?? null)
+export function wx_dataset(e: any, key?: string | number): any {
+  return check.exception(() => {
+    if (e?.currentTarget?.dataset) {
+      const dataset = e.currentTarget.dataset
+
+      if (check.undef(key) || check.nul(key)) return dataset
+
+      return dataset[key as string | number] ?? undefined
+    }
+
+    return null
+  })
 }
 
 /**

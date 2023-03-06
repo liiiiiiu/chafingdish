@@ -1,6 +1,8 @@
 <!--index.wxml-->
 <button bindtap="testWxRouter">wx_router 跳转</button>
 
+<button data-id="{{ 1 }}" data-0="{{ 2 }}" style="margin-top: 30px;" bindtap="onDataset">dataset</button>
+
 <view style="margin-top: 30px;">
   <button wx:if="{{ userLocationAuth }}" bindtap="getLocation">获取地理位置</button>
   <!-- 当用户 “拒绝授权” 后，想要再次弹出授权框，button按钮必须加上 `openType="openSetting"` 属性 -->
