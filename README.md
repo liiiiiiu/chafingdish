@@ -832,8 +832,6 @@ export async funtion deleteUser() {
 
 新增 `to_original` 函数，用于将接口返回的字符串类型数据转换为原始的数据类型
 
-新增 `wx_refresh_data` 函数，用于微信小程序多页数据同步更新
-
 ### v1.0.12
 
 新增 `is_falsy` 函数，用于判断输入值是否为假值
