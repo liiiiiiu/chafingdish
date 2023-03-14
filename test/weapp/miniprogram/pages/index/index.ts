@@ -1,8 +1,42 @@
 // index.ts
-import { wx_router, wx_authorize, is_undefined, is_null } from 'chafingdish'
+import { wx_router, wx_authorize, is_undefined, is_null, is_plain_object, is_function, is_string } from 'chafingdish'
+
+import { wx_refresh_data } from '../../utils/util'
 
 Page({
   data: {
+    goods: [
+      {
+        id: 1,
+        list: [
+          {
+            name: 'a',
+            age: 1,
+          },
+          {
+            name: 'b',
+            age: 2
+          }
+        ]
+      },
+      {
+        id: 2,
+        list: [
+          {
+            name: 'c',
+            age: 3,
+          },
+          {
+            name: 'd',
+            age: 4
+          }]
+      }
+    ],
+
+    goods1: {
+      id: 1,
+      title: 'a'
+    }
   },
 
   onLoad() {
@@ -54,7 +88,45 @@ Page({
     console.log('onDataset', this.wx_dataset(e), this.wx_dataset(e)[0])
   },
 
-  wx_refresh_data() {
+  onRefreshData() {
+    // wx_refresh_data('getLists', {
+    //   show_loading: true,
+    //   back: true
+    // })
 
+    // wx_refresh_data(['getLists'])
+
+
+    // wx_refresh_data({
+    //   data: 'goods.list.name',
+    //   value: 'tommy',
+    //   compare: {
+    //     'id.name': [2, 'c'],
+    //     'id.age': [2, 3]
+    //   }
+    // })
+
+    wx_refresh_data({
+      data: 'goods1',
+      value: 'tommy',
+      compare: {
+        'id.name': [2, 'c'],
+        'id.age': [2, 3]
+      }
+    }, {
+      // exclude: [0]
+    })
+    wx_refresh_data({
+      data: 'goods',
+      value: 'tommy',
+      compare: {
+        'id.name': [2, 'c'],
+        'id.age': [2, 3]
+      }
+    }, {
+      // exclude: [-1]
+    })
+
+    // wx_refresh_data('testWxRouter')
   }
 })

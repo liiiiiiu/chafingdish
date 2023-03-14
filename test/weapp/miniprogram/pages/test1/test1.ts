@@ -1,66 +1,75 @@
 // pages/test1/test1.ts
+import { wx_refresh_data } from '../../utils/util'
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
+    goods: [
+      {
+        id: 1,
+        list: [
+          {
+            name: 'a',
+            age: 1,
+          },
+          {
+            name: 'b',
+            age: 2
+          }
+        ]
+      },
+      {
+        id: 2,
+        list: [
+          {
+            name: 'c',
+            age: 3,
+          },
+          {
+            name: 'd',
+            age: 4
+          }]
+      }
+    ],
 
+    goods1: {
+      id: 1,
+      title: 'a'
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad() {
+  onRefreshData() {
+    wx_refresh_data({
+      data: 'goods.list.name',
+      value: 'tommy',
+      compare: {
+        'id.name': [2, 'c'],
+        'id.age': [2, 3]
+      }
+    }, {
+      show_loading: true,
+      // back: true,
+      exclude: [-1]
+    })
 
-  },
+    wx_refresh_data({
+      data: 'goods1',
+      value: 'tommy',
+      compare: {
+        'id.name': [2, 'c'],
+        'id.age': [2, 3]
+      }
+    }, {
+      exclude: [-1]
+    })
+    // wx_refresh_data({
+    //   data: 'goods',
+    //   value: 'tommy',
+    //   // compare: {
+    //   //   'id.name': [2, 'c'],
+    //   //   'id.age': [2, 3]
+    //   // }
+    // })
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+    // wx_refresh_data('testWxRouter')
   }
 })

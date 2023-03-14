@@ -7,7 +7,7 @@ export default class Cast {
      * "true" => true
      * "null" => null
      */
-    private unwrap;
+    unwrap(value: unknown): any;
     str(value: unknown): string;
     num(value: unknown): number;
     bool(value: unknown): boolean;

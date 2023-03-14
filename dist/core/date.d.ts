@@ -2,11 +2,11 @@ import dayjs from 'dayjs';
 import { UnitType } from 'dayjs';
 export declare const d_day: typeof dayjs;
 /**
- * Get timestamp.
+ * Get timestamp
  *
- * @param {string|number|undefined} value Timestamp or date.
+ * @param {string|number|undefined} value Timestamp or date
  *
- * @returns {number} Timestamp.
+ * @returns {number} Timestamp
  *
  * @example
  *
@@ -14,11 +14,11 @@ export declare const d_day: typeof dayjs;
  */
 export declare function d_time(value?: string | number): number;
 /**
- * Get timestamp.
+ * Get timestamp
  *
- * @param {string|number|undefined} value Timestamp or date.
+ * @param {string|number|undefined} value Timestamp or date
  *
- * @returns {number} Timestamp.
+ * @returns {number} Timestamp
  *
  * @example
  *
@@ -26,12 +26,12 @@ export declare function d_time(value?: string | number): number;
  */
 export declare function d_timestamp(value?: string | number): number;
 /**
- * Get formatted date.
+ * Get formatted date
  *
- * @param {string|number|undefined} value Timestamp or date.
+ * @param {string|number|undefined} value Timestamp or date
  * @param {string} separator
  *
- * @returns {string} Formatted date.
+ * @returns {string} Formatted date
  *
  * @example
  *
@@ -40,12 +40,12 @@ export declare function d_timestamp(value?: string | number): number;
  */
 export declare function d_format(value?: string | number, separator?: string): string;
 /**
- * Get formatted date.
+ * Get formatted date
  *
- * @param {string|number|undefined} value Timestamp or date.
+ * @param {string|number|undefined} value Timestamp or date
  * @param {string} separator
  *
- * @returns {string} Formatted date, including only the year, month and day.
+ * @returns {string} Formatted date, including only the year, month and day
  *
  * @example
  *
@@ -54,15 +54,15 @@ export declare function d_format(value?: string | number, separator?: string): s
  */
 export declare function d_format_YMD(value?: string | number, separator?: string): string;
 /**
- * Get the difference between two dates.
+ * Get the difference between two dates
  *
  * see: https://dayjs.fenxianglu.cn/category/display.html#%E6%97%A5%E5%8E%86%E6%97%B6%E9%97%B4
  *
- * @param {string|number} value1 Timestamp or date.
- * @param {string|number} value2 Timestamp or date.
- * @param {UnitType} unit The specified unit.
+ * @param {string|number} value1 Timestamp or date
+ * @param {string|number} value2 Timestamp or date
+ * @param {UnitType} unit The specified unit
  *
- * @returns {string} Formatted date, including only the year, month and day.
+ * @returns {string} Formatted date, including only the year, month and day
  *
  * @example
  *
@@ -70,12 +70,12 @@ export declare function d_format_YMD(value?: string | number, separator?: string
  */
 export declare function d_diff(value1: string | number, value2: string | number, unit?: UnitType): number;
 /**
- * Get the dates in month.
+ * Get the dates in month
  *
- * @param {string|number} value Timestamp or date.
- * @param {UnitType} formatter Value formatter, same as dayjs formatter.
+ * @param {string|number} value Timestamp or date
+ * @param {UnitType} formatter Value formatter, same as dayjs formatter
  *
- * @returns {string} Formatted dates in month.
+ * @returns {string} Formatted dates in month
  *
  * @example
  *

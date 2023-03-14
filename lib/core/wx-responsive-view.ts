@@ -2,6 +2,11 @@ import Check from '../helper/check'
 
 const check = new Check()
 
+/**
+ * ResponseView
+ *
+ * After fetch the response data, automatically process and control the data binding with wxml
+ */
 export interface ResponseViewType {
   showLoading: any
   hideLoading: any
@@ -11,40 +16,43 @@ export interface ResponseViewType {
   stopPullDownRefresh: any
   clear: Boolean
   /**
-   * 发起 GET 请求获取数据
+   * Send GET request
    *
-   * @param {Function} sendRequest 发送请求函数
-   * @param {Function|undefined|null} successCallback 请求成功后的回调函数
-   * @param {Function|undefined|null} failCallback 请求失败后的回调函数
-   * @param {boolean} reachBottom 是否正在执行页面上拉触底事件
+   * @param {Function} sendRequest Request function
+   * @param {Function} successCallback Callback after success
+   * @param {Function} failCallback Callback after fail
+   * @param {boolean} reachBottom is reachBottom?
    */
   get: (sendRequest: (data?: any) => any, successCallback?: ((data?: any) => any) | null, failCallback?: ((data?: any) => any) | null, reachBottom?: boolean) => any
   /**
-   * 发起 POST 请求新增数据
+   * Send POST request
    *
-   * @param {Function} sendRequest 发送请求函数
-   * @param {Function|undefined|null} successCallback 请求成功后的回调函数
-   * @param {Function|undefined|null} failCallback 请求失败后的回调函数
+   * @param {Function} sendRequest Request function
+   * @param {Function} successCallback Callback after success
+   * @param {Function} failCallback Callback after fail
    */
   post: (sendRequest: (data?: any) => any, successCallback?: ((data?: any) => any) | null, failCallback?: ((data?: any) => any) | null) => any
   /**
-   * 发起 PUT 请求更新数据
+   * Send PUT request
    *
-   * @param {Function} sendRequest 发送请求函数
-   * @param {Function|undefined|null} successCallback 请求成功后的回调函数
-   * @param {Function|undefined|null} failCallback 请求失败后的回调函数
+   * @param {Function} sendRequest Request function
+   * @param {Function} successCallback Callback after success
+   * @param {Function} failCallback Callback after fail
    */
   put: (sendRequest: (data?: any) => any, successCallback?: ((data?: any) => any) | null, failCallback?: ((data?: any) => any) | null) => any
   /**
-   * 发起 DELETE 请求删除数据
+   * Send DELETE request
    *
-   * @param {Function} sendRequest 发送请求函数
-   * @param {Function|undefined|null} successCallback 请求成功后的回调函数
-   * @param {Function|undefined|null} failCallback 请求失败后的回调函数
+   * @param {Function} sendRequest Request function
+   * @param {Function} successCallback Callback after success
+   * @param {Function} failCallback Callback after fail
    */
   delete: (sendRequest: (data?: any) => any, successCallback?: ((data?: any) => any) | null, failCallback?: ((data?: any) => any) | null) => any
 }
 
+/**
+ * Config for ResponseView
+ */
 export interface ResponseViewConfigType {
   view_key_prefix?: string
   show_loading?: boolean
@@ -67,13 +75,6 @@ const responseViewConfig: ResponseViewConfigType = {
   fail_toast_title: '提交失败，请重试'
 }
 
-/**
- * ResponseView 响应视图
- *
- * 在发送请求到后端并获得响应数据后，自动处理、控制与 wxml 中的数据绑定；
- *
- * 这里的数据绑定包括 “渲染数据” “是否为空数据” “全部数据是否加载完毕” “分页数” 等。
- */
 export class ResponseView implements ResponseViewType {
   protected page: {
     data: {
@@ -214,14 +215,6 @@ export class ResponseView implements ResponseViewType {
     return true
   }
 
-  /**
-   * 发起 GET 请求获取列表数据
-   *
-   * @param {Function} sendRequest 发送请求函数，接收 ResponseView 传入的分页
-   * @param {Function|undefined|null} successCallback 请求成功后的回调函数
-   * @param {Function|undefined|null} failCallback 请求失败后的回调函数
-   * @param {boolean} reachBottom 是否正在执行页面上拉触底事件
-   */
   public async get(sendRequest: (data?: any) => any, successCallback?: ((data?: any) => any) | null, failCallback?: ((data?: any) => any) | null, reachBottom: boolean = false) {
     if (reachBottom && (this.empty || this.last)) return
 
@@ -371,35 +364,14 @@ export class ResponseView implements ResponseViewType {
     }
   }
 
-  /**
-   * 发起 POST 请求新增数据
-   *
-   * @param {Function} sendRequest 发送请求函数
-   * @param {Function|undefined|null} successCallback 请求成功后的回调函数
-   * @param {Function|undefined|null} failCallback 请求失败后的回调函数
-   */
   public async post(sendRequest: (data?: any) => any, successCallback?: ((data?: any) => any) | null, failCallback?: ((data?: any) => any) | null) {
     this.common(sendRequest, successCallback, failCallback)
   }
 
-  /**
-   * 发起 PUT 请求更新数据
-   *
-   * @param {Function} sendRequest 发送请求函数
-   * @param {Function|undefined|null} successCallback 请求成功后的回调函数
-   * @param {Function|undefined|null} failCallback 请求失败后的回调函数
-   */
   public put(sendRequest: (data?: any) => any, successCallback?: ((data?: any) => any) | null, failCallback?: ((data?: any) => any) | null) {
     this.common(sendRequest, successCallback, failCallback)
   }
 
-  /**
-   * 发起 DELETE 请求删除数据
-   *
-   * @param {Function} sendRequest 发送请求函数
-   * @param {Function|undefined|null} successCallback 请求成功后的回调函数
-   * @param {Function|undefined|null} failCallback 请求失败后的回调函数
-   */
   public delete(sendRequest: (data?: any) => any, successCallback?: ((data?: any) => any) | null, failCallback?: ((data?: any) => any) | null) {
     this.common(sendRequest, successCallback, failCallback)
   }

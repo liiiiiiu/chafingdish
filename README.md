@@ -6,7 +6,7 @@
 
 比如基础的数据类型判断，数据类型转换，处理后端返回的时间、金额等字段，生成模拟数据等；
 
-在开发微信小程序时，可以使用更便捷的 Promisify API，使用对 `wx.switchTab` `wx.reLaunch` `wx.redirectTo` `wx.navigateTo` `wx.navigateBack` 进行一致性封装的 `wx_router` 路由函数，对地理位置、相册、摄像头等十多种API进行统一封装 `wx_authorize` 授权函数等；
+在开发微信小程序时，可以使用更便捷的 Promisify API，使用对 `wx.switchTab` `wx.reLaunch` `wx.redirectTo` `wx.navigateTo` `wx.navigateBack` 进行一致性封装的 `wx_router` 路由函数，对地理位置、相册、摄像头等十多种API进行统一封装的 `wx_authorize` 授权函数等；
 
 大致功能如下：
 
@@ -14,7 +14,7 @@
 2. is 函数用于判断数据类型；
 3. to 函数用于强制转换数据类型；
 4. d  函数用于处理时间；
-5. wx 函数对部分小程序接口进行 Promise 封装，并提供 `wx_router` 路由函数、`wx_authorize` 授权函数、`ResponseView` 视图交互类；
+5. wx 函数对部分小程序接口进行 Promise 封装，并提供 `wx_router` 路由函数、`wx_authorize` 授权函数、`wx_refresh_data` 多页数据同步更新函数、 `ResponseView` 视图交互类；
 6. 更多功能查看下方示例
 
 ## 安装
@@ -209,6 +209,14 @@ is_falsy(-0) // true
 is_falsy(undefined) // true
 is_falsy(NaN) // true
 is_falsy('0') // false
+
+// 比较两个值是否相等
+// 对于前端来说，通常需要对比 string、number、boolean、undefined、null、{}、[] 这几种类型的数据
+is_equal('1', 1) // false
+is_equal(['1', '2', [3, 4, [5]]], ['1', '2', [3, 4, [5]]]) // true
+is_equal({ a: { b: [1, 2] } }, { a: { b: [1, '2'] } })) // false
+// strict 参数传入 false，不会使用严格比较
+is_equal('1', 1, false) // true
 ```
 
 #### 业务判断
@@ -307,6 +315,14 @@ to_undefined(null) // undefined
 to_null() // null
 to_null(1) // null
 to_null(undefined) // null
+
+// 在做对接时，接口返回的数据可能是这样的格式： "1" "true"
+// 前端拿到数据后需要将其转换为原始的数据类型
+to_original('a') // 'a'
+to_original('1') // 1
+to_original('true') // true
+to_original('null') // null
+to_original('[{ "id": 1, "age": 12 }]') // [{ "id": 1, "age": 12 }]
 ```
 
 #### 业务转换
@@ -412,8 +428,8 @@ wx_window_height() // 555
 wx_window_pixel_ratio() // 2
 
 // 获取图片、文件信息的同步写法
-const res1 = wx_image_info_sync(path)
-const res2 = wx_file_info_sync(path)
+const res1 = await wx_image_info_sync(path)
+const res2 = await wx_file_info_sync(path)
 ```
 
 #### wx_router
@@ -541,7 +557,133 @@ Page({
 
 > 使用定位等接口时，需要在 app.json 中配置 `permission` `requiredPrivateInfos` 等字段
 
-#### ResponseView
+#### wx_refresh_data [Dev]
+
+`wx_refresh_data` 是微信小程序多页数据同步更新函数；
+
+用于解决从页面A跳转到页面B，再跳转到页面C，最后到页面D，在D页面提交某个表单后需要刷新A、B、C、D页面中的数据，保证其数据的一致性；
+
+在实际开发中，比如要开发一个社交类的小程序，从动态列表页点击某条动态跳转到详情页后，给该动态进行点赞操作，那么前面的列表页也需要同步更新点赞状态，这时就可以使用 `wx_refresh_data`，或者在经过多页跳转后，用户新增了一条动态，我们就可以帮助用户刷新已打开页面的数据，提升用户体验
+
+> 支持全量更新或仅更新某条数据，不支持插入新数据、删除数据，不支持自定义组件内的数据更新
+
+示例如下：
+
+```javascript
+// 相关参数及说明
+// handler 为函数名，执行函数后，重新渲染数据，实现全量更新
+// handler 为对象，更新某条数据
+wx_refresh_data(handler: string | {
+  // 需要更新的 data 值
+  data: string
+  // 更新值
+  value: any
+  // 比对参数，相同后更新 data 值（仅在 data 为数组类型时有效）
+  // 可进行多条件对比
+  compare?: {
+    [key: string]: any
+  }
+}, config?: {
+  // 显示 loading 提示框
+  show_loading?: boolean
+  // loading 提示框内容
+  loading_title?: string
+  // loading 提示框透明蒙层
+  loading_mask?: boolean
+  // 执行完成后是否关闭当前页面，返回上一页面或多级页面
+  back?: boolean
+  // 返回的页面数
+  delta?: number
+  // handler 为函数名，是否采用同步策略
+  sync?: boolean
+  // 排除执行 handler 的页面，可传入负数（如传入-1则排出当前页面）
+  exclude?: number[]
+})
+
+// 案例
+// a.js
+page({
+  // a.js 中有如下数据
+  data: {
+    item: {
+      name: 'c'
+    },
+
+    list: [
+      {
+        id: 1,
+        children: [
+          {
+            id: 10,
+            name: 'a',
+            age: 12
+          }
+        ]
+      },
+      {
+        id: 2,
+        children: [
+          {
+            id: 20,
+            name: 'b',
+            age: 18
+          }
+        ]
+      }
+    ]
+  },
+
+  getList() {
+    // ...
+  }
+})
+
+// b.js
+import { wx_refresh_data } from 'chafingdish'
+
+page({
+  data: {},
+
+  refreshData() {
+    // 更新函数
+    // 已打开的页面中（a.js）如果有 `getList` 函数就会执行
+    wx_refresh_data('getList', {
+      // 同步执行 getList
+      sync: true
+    })
+
+    // 更新某条数据
+    // 已打开的页面中（a.js）如果 data 下有该属性就会执行
+    wx_refresh_data({
+      data: 'item.name'
+      value: 'xiaoming'
+    })
+    wx_refresh_data({
+      data: 'list.children.name', // 使用类似于链式结构的字符串指定具体的属性
+      value: 'xiaoming',
+      // 由于 list 为数组结构，需要指定对比参数，这里指定了 id 为 2 的数据
+      // 由于 children 为数组结构，需要指定对比参数，这里指定了 name 为 'b' 并且 age 为 18 的数据
+      // 对比参数的写法需要与 data 的链式写法一致
+      compare: {
+        'id.name': [2, 'b'],
+        'id.age': [2, 18]
+      }
+    }, {
+      // 显示 loading 提示框
+      show_loading: true,
+      // 执行完更新策略后自动返回上一页
+      back: true,
+      // 排除了当前页面，当前页不会执行更新策略
+      exclude: [-1]
+    })
+  }
+})
+
+```
+
+#### ResponseView 响应视图
+
+高度自动化的数据绑定函数；
 
 在发送请求到后端并获得响应数据后，自动处理、控制与 wxml 中的数据绑定；
 
@@ -684,6 +826,14 @@ export async funtion deleteUser() {
 
 ## Changelog
 
+### v1.0.13
+
+新增 `is_equal` 函数，用于比较两个值是否相等
+
+新增 `to_original` 函数，用于将接口返回的字符串类型数据转换为原始的数据类型
+
+新增 `wx_refresh_data` 函数，用于微信小程序多页数据同步更新
+
 ### v1.0.12
 
 新增 `is_falsy` 函数，用于判断输入值是否为假值
@@ -699,3 +849,5 @@ export async funtion deleteUser() {
 ---
 
 优化 `wx_dataset` 函数写法
+
+> Chafingdish 旨在覆盖前端开发中所需的工具函数，欢迎Star、Fork、PR

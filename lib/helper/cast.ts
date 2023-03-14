@@ -13,7 +13,7 @@ export default class Cast {
    * "true" => true
    * "null" => null
    */
-  private unwrap(value: unknown) {
+  public unwrap(value: unknown) {
     if (typeof value === 'string') {
       if (value === +value + '') {
         return +value
@@ -34,7 +34,7 @@ export default class Cast {
       if (rbrace.test(value)) {
         try {
           return JSON.parse(value)
-        } catch (error) { }
+        } catch (error) {}
       }
     }
 

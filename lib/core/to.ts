@@ -5,11 +5,11 @@ import { accMul } from '../helper/calc'
 const cast = new Cast()
 
 /**
- * Convert value to string.
+ * Convert value to string
  *
- * @param {Object} value The value to convert.
+ * @param {Object} value The value to convert
  *
- * @returns {string} Converted value.
+ * @returns {string} Converted value
  *
  * @example
  *
@@ -21,11 +21,11 @@ export function to_string(value: unknown): string {
 }
 
 /**
- * Convert value to number.
+ * Convert value to number
  *
- * @param {Object} value The value to convert.
+ * @param {Object} value The value to convert
  *
- * @returns {number} Converted value.
+ * @returns {number} Converted value
  *
  * @example
  *
@@ -40,12 +40,12 @@ export function to_number(value: unknown): number {
 }
 
 /**
- * Convert value to integer.
+ * Convert value to integer
  *
- * @param {Object} value The value to convert.
+ * @param {Object} value The value to convert
  * @param {boolean} round Use Math.round?
  *
- * @returns {number} Converted value.
+ * @returns {number} Converted value
  *
  * @example
  *
@@ -59,13 +59,13 @@ export function to_integer(value: unknown, round: boolean = false): number {
 }
 
 /**
- * Convert value to float.
+ * Convert value to float
  *
- * @param {Object} value The value to convert.
- * @param {1|2} decimal One or two decimal reserved.
+ * @param {Object} value The value to convert
+ * @param {1|2} decimal One or two decimal reserved
  * @param {boolean} round Use Math.round?
  *
- * @returns {number} Converted value.
+ * @returns {number} Converted value
  *
  * @example
  *
@@ -96,18 +96,18 @@ export function to_float(value: unknown, decimal: 1 | 2 = 2, round: boolean = fa
 }
 
 /**
- * Convert value to cent.
+ * Convert value to cent
  *
- * Usual, store `price` field (use `cent`) to database.
+ * Usual, store `price` field (use `cent`) to database
  *
  * Only for RMB!
  *
- * @param {Object} value The value to convert.
+ * @param {Object} value The value to convert
  * @param {boolean} round Use Math.round?
- * @param {boolean} reverse cent to yuan
- * @param {0|1|2} decimal decimal reserved.
+ * @param {boolean} reverse Cent to yuan
+ * @param {0|1|2} decimal Decimal reserved
  *
- * @returns {number|string} Converted value.
+ * @returns {number|string} Converted value
  *
  * @example
  *
@@ -135,11 +135,11 @@ export function to_cn_cent(value: unknown, round: boolean = false, reverse: bool
 }
 
 /**
- * Convert value to boolean.
+ * Convert value to boolean
  *
- * @param {Object} value The value to convert.
+ * @param {Object} value The value to convert
  *
- * @returns {boolean} Converted value.
+ * @returns {boolean} Converted value
  *
  * @example
  *
@@ -150,11 +150,11 @@ export function to_boolean(value: unknown): boolean {
 }
 
 /**
- * Convert value to array.
+ * Convert value to array
  *
- * @param {Object} value The value to convert.
+ * @param {Object} value The value to convert
  *
- * @returns {any[]} Converted value.
+ * @returns {any[]} Converted value
  *
  * @example
  *
@@ -167,11 +167,11 @@ export function to_array(value: unknown): any[] {
 }
 
 /**
- * Convert value to symbol.
+ * Convert value to symbol
  *
- * @param {Object} value The value to convert.
+ * @param {Object} value The value to convert
  *
- * @returns {Symbol} Converted value.
+ * @returns {Symbol} Converted value
  *
  * @example
  *
@@ -182,38 +182,49 @@ export function to_symbol(value: unknown): Symbol {
 }
 
 /**
- * Convert value to undefined.
+ * Convert value to undefined
  *
- * @param {Object} value The value to convert.
+ * @param {Object} value The value to convert
  *
- * @returns {undefined} Converted value.
+ * @returns {undefined} Converted value
  */
 export function to_undefined(value?: unknown): undefined {
   return cast.undef()
 }
 
 /**
- * Convert value to null.
+ * Convert value to null
  *
- * @param {Object} value The value to convert.
+ * @param {Object} value The value to convert
  *
- * @returns {null} Converted value.
+ * @returns {null} Converted value
  */
 export function to_null(value?: unknown): null {
   return cast.nul()
 }
 
 /**
- * Convert value to pinyin.
+ * Convert value to pinyin
  *
- * Only for cn.
+ * Only for cn
  *
- * @param {Object} value The value to convert.
+ * @param {Object} value The value to convert
  *
- * @returns {string[]} Converted value.
+ * @returns {string[]} Converted value
  */
 export function to_cn_pinyin(value: unknown): string[] {
   let newValue = cast.str(value)
 
   return makePy(newValue) || []
+}
+
+/**
+ * Convert value to original value
+ *
+ * @param {Object} value The value to convert
+ *
+ * @returns {string[]} Converted value
+ */
+export function to_original(value: unknown): any {
+  return cast.unwrap(value)
 }

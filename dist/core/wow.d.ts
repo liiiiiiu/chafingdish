@@ -1,6 +1,6 @@
 interface WowArrayType extends Array<any> {
     /**
-     * Returns the first element in the array.
+     * Returns the first element in the array
      *
      * @example
      *
@@ -16,7 +16,7 @@ interface WowArrayType extends Array<any> {
      */
     last: any;
     /**
-     * Returns the min element in the array.
+     * Returns the min element in the array
      *
      * @example
      *
@@ -24,7 +24,7 @@ interface WowArrayType extends Array<any> {
      */
     min: number;
     /**
-     * Returns the max element in the array.
+     * Returns the max element in the array
      *
      * @example
      *
@@ -32,7 +32,7 @@ interface WowArrayType extends Array<any> {
      */
     max: number;
     /**
-     * Batch remove elements from the array.
+     * Batch remove elements from the array
      *
      * @example
      *
@@ -40,7 +40,7 @@ interface WowArrayType extends Array<any> {
      */
     remove: (...args: (number | Function)[]) => any[];
     /**
-     * Shuffle the elements of the array.
+     * Shuffle the elements of the array
      *
      * @example
      *
@@ -48,7 +48,7 @@ interface WowArrayType extends Array<any> {
      */
     shuffle: any[];
     /**
-     * Array nesting.
+     * Array nesting
      *
      * @param {number|string|null|undefined} root_id Root id to start nesting.
      * @param {string} link Nested by `link` value, the default value is 'parent_id'.

@@ -34,6 +34,7 @@ export const {
   is_arguments,
   is_error,
   is_falsy,
+  is_equal,
 
   is_leap_year,
   is_email,
@@ -55,6 +56,7 @@ export const {
   to_symbol,
   to_undefined,
   to_null,
+  to_original,
 
   to_cn_cent,
   to_cn_pinyin

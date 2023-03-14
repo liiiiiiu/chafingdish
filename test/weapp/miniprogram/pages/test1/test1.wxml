@@ -1,2 +1,2 @@
 <!--pages/test1/test1.wxml-->
-<text>pages/test1/test1.wxml</text>
+<button style="margin-top: 30px;" bindtap="onRefreshData">刷新数据</button>

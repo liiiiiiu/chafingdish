@@ -32,9 +32,6 @@ class Router {
     this.pages2Routes()
   }
 
-  /**
-   * Get the Collections of the `routes`.
-   */
   get routes() {
     const temp: { [key: string]: string } = {}
 
@@ -47,9 +44,6 @@ class Router {
     return temp
   }
 
-  /**
-   * Get the Collections of the `route`.
-   */
   get route() {
     return this._route
   }
@@ -86,7 +80,7 @@ class Router {
 
     // If the `path` contains these characters,
     // it is considered that the `path` has params,
-    // so, return the `path` directly.
+    // so, return the `path` directly
     if (path.indexOf('?') > 0
       || path.indexOf('&') > 0
       || path.indexOf('=') > 0) {
@@ -112,16 +106,16 @@ class Router {
     path = path + ''
 
     // `routes` does not contain `RELAUNCH_TAG`,
-    // so, after handle `isRelaunch`, remove `RELAUNCH_TAG` from `path`.
+    // so, after handle `isRelaunch`, remove `RELAUNCH_TAG` from `path`
     let isRelaunch: boolean = path.indexOf(Router.RELAUNCH_TAG) > -1
     if (isRelaunch) {
       path = path.replace(Router.RELAUNCH_TAG, '')
     }
 
-    // find a matching path from the `routes` after `isRelaunch` settled.
+    // find a matching path from the `routes` after `isRelaunch` settled
     let newPath: string = this._routes[path] || this._routes[path + Router.TABBAR_TAG] || path
 
-    // checks if the `path` is a tabbar page.
+    // checks if the `path` is a tabbar page
     let isTabbar: boolean = (!!this._routes[path + Router.TABBAR_TAG] || path.indexOf(Router.TABBAR_TAG) > -1)
 
     return { newPath: newPath.replace(Router.TABBAR_TAG, ''), isTabbar, isRelaunch }
@@ -202,29 +196,6 @@ class Router {
     }
   }
 
-  /**
-   * Call wx.navigateTo or wx.switchTab.
-   *
-   * Will automatically use `wx.navigateTo` or `wx.switchTab`.
-   *
-   * @param {string} path The path to jump to.
-   * @param {object} params Parameters passed to the next page.
-   * @param {Function} successCallback Success callback.
-   * @param {Function} failCallback Fail callback.
-   * @param {Function} completeCallback Complete callback.
-   *
-   * @example
-   *
-   * // You can use the shorthand of the `path`, and the specific path will be build automatically(not include the last level).
-   * // `/pages/logs/logs` => `PagesLogs`
-   * wx_router.push('PagesLogs')
-   *
-   * // Use the specific path.
-   * wx_router.push('/pages/logs/logs')
-   *
-   * // Use the `routes`.
-   * wx_router.push(wx_router.routes.PagesLogs)
-   */
   public push(
     path: string,
     params?: object | null,
@@ -248,31 +219,6 @@ class Router {
     })
   }
 
-  /**
-   * Call wx.redirectTo or wx.reLaunch.
-   *
-   * @param {string} path The page to jump to.
-   * @param {object} params Parameters passed to the next page.
-   * @param {Function} successCallback Success callback.
-   * @param {Function} failCallback Fail callback.
-   * @param {Function} completeCallback Complete callback.
-   *
-   * @example
-   *
-   * // Use `wx.redirectTo`.
-   * // You can use the shorthand of the `path`, and the specific path will be build automatically(not include the last level).
-   * // `/pages/logs/logs` => `PagesLogs`
-   * wx_router.replace('PagesLogs')
-   *
-   * // Add `@relaunch` tag to use `wx.reLaunch`.
-   * wx_router.replace(`PagesLogs@relaunch`, null, (res: any) => {console.log(res)})
-   *
-   * // Use the specific path.
-   * wx_router.replace('/pages/logs/logs')
-   *
-   * // Use the `routes`.
-   * wx_router.replace(wx_router.routes.PagesLogs)
-   */
   public replace(
     path: string,
     params?: object | null,
@@ -295,20 +241,6 @@ class Router {
     })
   }
 
-  /**
-   * Exactly like wx.navigateBack.
-   *
-   * @param {number} delta The number of pages to return-back.
-   * @param {Function} successCallback Success callback.
-   * @param {Function} failCallback Fail callback.
-   * @param {Function} completeCallback Complete callback.
-   *
-   * @example
-   *
-   * wx_router.back()
-   *
-   * wx_router.back(2, () => (res: any) => {console.log(res)})
-   */
   public back(
     delta?: number,
     successCallback?: (data?: any) => any,
@@ -332,7 +264,7 @@ class Router {
 
 export interface WxRouter {
   /**
-   * 返回项目中所有的路由信息
+   * Return all router info
    *
    * {
    *  PagesIndex: "/pages/index/index",
@@ -343,7 +275,7 @@ export interface WxRouter {
   routes: { [key: string]: string }
 
   /**
-   * 返回当前跳转的路由信息
+   * Return current router info
    *
    * {
    *   from: "pages/index/index"
@@ -354,78 +286,77 @@ export interface WxRouter {
   route: { to: string, from: string, params: any }
 
   /**
-   * 调用 wx.navigateTo 或者 wx.switchTab
+   * Invoke `wx.navigateTo` or `wx.switchTab`
    *
-   * push 函数会根据页面性质自动调用 wx.navigateTo、wx.switchTab
+   * This function will automatically choose `wx.navigateTo` or `wx.switchTab`
    *
-   * @param path 跳转的页面
-   * @param params 携带的参数
-   * @param successCallback 跳转成功后的回调函数
-   * @param failCallback 跳转失败后的回调函数
-   * @param completeCallback 跳转完成后的回调函数
+   * @param {string} path The path to jump to
+   * @param {object} params The parameters passed to the next page
+   * @param {Function} successCallback Callback after success
+   * @param {Function} failCallback Callback after fail
+   * @param {Function} completeCallback Callback after complete
    *
    * @example
    *
-   * // 传入的路径可以使用简写的方式（不包含最后一层）
+   * // You can use the shorthand of the `path`, and the specific path will be build automatically(not include the last level).
    * // `/pages/logs/logs` => `PagesLogs`
-   * wx_router.push('PagesLogs', { id: 1 },
-   *  (res) => {
-   *    console.log('success callback', res)
-   *  },
-   *  (err) => {
-   *    console.log('fail callback', err)
-   *  },
-   *  (res) => {
-   *    console.log('complete callback', res)
-   *  }
-   * )
-   * // 也可以写入具体的路径
+   * wx_router.push('PagesLogs')
+   *
+   * // Use the specific path.
    * wx_router.push('/pages/logs/logs')
-   * // 或者使用 routes 对象的属性
+   *
+   * // Use the `routes`.
    * wx_router.push(wx_router.routes.PagesLogs)
    */
   push: (path: string, params?: object | null, successCallback?: (data?: any) => any, failCallback?: (data?: any) => any, completeCallback?: (data?: any) => any) => any
 
   /**
-   * 调用 wx.redirectTo 或者 wx.reLaunch
+   * Invoke `wx.redirectTo` or `wx.reLaunch`
    *
-   * 传入的路径参数和 push 函数一样有三种方式
-   *
-   * @param path 跳转的页面
-   * @param params 携带的参数
-   * @param successCallback 跳转成功后的回调函数
-   * @param failCallback 跳转失败后的回调函数
-   * @param completeCallback 跳转完成后的回调函数
+   * @param {string} path The page to jump to
+   * @param {object} params The parameters passed to the next page
+   * @param {Function} successCallback Callback after success
+   * @param {Function} failCallback Callback after fail
+   * @param {Function} completeCallback Callback after complete
    *
    * @example
    *
+   * // Use `wx.redirectTo`.
+   * // You can use the shorthand of the `path`, and the specific path will be build automatically(not include the last level).
+   * // `/pages/logs/logs` => `PagesLogs`
    * wx_router.replace('PagesLogs')
-   * // 默认调用 redirectTo，添加 `@relaunch` 标记后使用 wx.reLaunch
+   *
+   * // Add `@relaunch` tag to use `wx.reLaunch`.
    * wx_router.replace(`PagesLogs@relaunch`, null, (res: any) => {console.log(res)})
+   *
+   * // Use the specific path.
    * wx_router.replace('/pages/logs/logs')
+   *
+   * // Use the `routes`.
    * wx_router.replace(wx_router.routes.PagesLogs)
    */
   replace: (path: string, params?: object | null, successCallback?: (data?: any) => any, failCallback?: (data?: any) => any, completeCallback?: (data?: any) => any) => any
 
   /**
-   * 调用 wx.navigateBack
+   * Invoke `wx.navigateBack`
    *
-   * @param delta 指定返回的页面数
-   * @param successCallback 跳转成功后的回调函数
-   * @param failCallback 跳转失败后的回调函数
-   * @param completeCallback 跳转完成后的回调函数
+   * @param {number} delta The number of pages to return-back
+   * @param {Function} successCallback Callback after success
+   * @param {Function} failCallback Callback after fail
+   * @param {Function} completeCallback Callback after complete
    *
    * @example
    *
    * wx_router.back()
+   *
    * wx_router.back(2, () => (res: any) => {console.log(res)})
    */
   back: (delta?: number, successCallback?: (data?: any) => any, failCallback?: (data?: any) => any, completeCallback?: (data?: any) => any) => any
 }
 
 /**
- * Router for Weapp.
+ * Router for weapp
  *
- * 微信小程序跳转API封装
+ * Consistent grammar for `wx.switchTab` `wx.reLaunch` `wx.redirectTo` `wx.navigateTo` `wx.navigateBack`
  */
 export const wx_router: WxRouter = check.exception(() => new Router())

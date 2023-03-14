@@ -87,12 +87,78 @@ class Authorize {
   }
 
   /**
-   * 检查用户授权状态，如还未授权则调用 wx.authorize 呼出授权弹框。
+   * Recheck the authorization status for the current scope
    *
-   * @param {string} scopeName 需要授权的 scope
-   * @param {Function} successCallback 授权成功的回调函数
-   * @param {Function} failCallback 授权失败的回调函数
+   * If the authorization is rejected, call `wx.openSetting` to open the setting interface and guide the user to authorize
+   *
+   * @param {string} scopeName The scope that needs recheck
+   * @param {Function} successCallback Callback after success
+   * @param {Function} failCallback Callback after fail
    */
+  protected recheck(scopeName: ScopeNameType, successCallback?: Function, failCallback?: Function) {
+    this.compare(scopeName)
+
+    const scope = 'scope.' + scopeName
+
+    // @ts-ignore
+    wx.getSetting({
+      success: (settingRes: any) => {
+        if (settingRes.authSetting[scope]) {
+          this.authStateSettle(scopeName, true)
+
+          successCallback && successCallback(settingRes)
+
+          return
+        }
+
+        // @ts-ignore
+        wx.openSetting({
+          success: (authRes: any) => {
+            this.authStateSettle(scopeName, true)
+
+            successCallback && successCallback(authRes)
+          },
+          fail: (error: any) => {
+            this.authStateSettle(scopeName, false)
+
+            failCallback && failCallback(error)
+          }
+        })
+      },
+      fail: (settingError: any) => {
+        this.authStateSettle(scopeName, false)
+
+        failCallback && failCallback(settingError)
+      }
+    })
+  }
+
+  /**
+   * Handler after authorization is denied
+   *
+   * only triggered manually by the user clicking the openType button after the authorization is rejected for the first time
+   *
+   * @param {Object} e `event` parameter after button clicked
+   * @param {string} scopeName The scope that needs authorization
+   * @param {Function} successCallback Callback after success
+   * @param {Function} failCallback Callback after fail
+   */
+  protected opensetting(e: any, scopeName: ScopeNameType, successCallback?: Function, failCallback?: Function) {
+    this.compare(scopeName)
+
+    const scope = 'scope.' + scopeName
+
+    if (e.detail.authSetting[scope]) {
+      this.authStateSettle(scopeName, true)
+
+      successCallback && successCallback('')
+    } else {
+      this.authStateSettle(scopeName, false)
+
+      failCallback && failCallback('')
+    }
+  }
+
   public check(scopeName: ScopeNameType, successCallback?: Function, failCallback?: Function) {
     this.compare(scopeName)
 
@@ -132,99 +198,6 @@ class Authorize {
     })
   }
 
-  /**
-   * 在调用需授权接口时要再次确认是否获得了用户授权；
-   *
-   * 如获得授权，继续执行该接口；
-   *
-   * 如未获得授权，调用 wx.openSetting 打开设置界面，引导用户开启授权；
-   *
-   * 注意：设置界面中只会出现小程序向用户请求过的权限！也就是说必须要先调用 check 函数弹出 wx.authorize 的授权框，不管用户同意还是拒绝，该 scope 才会出现在设置界面里。
-   *
-   * @param {string} scopeName 需要授权的 scope
-   * @param {Function} successCallback 授权成功的回调函数
-   * @param {Function} failCallback 授权失败的回调函数
-   */
-  public recheck(scopeName: ScopeNameType, successCallback?: Function, failCallback?: Function) {
-    this.compare(scopeName)
-
-    const scope = 'scope.' + scopeName
-
-    // @ts-ignore
-    wx.getSetting({
-      success: (settingRes: any) => {
-        if (settingRes.authSetting[scope]) {
-          this.authStateSettle(scopeName, true)
-
-          successCallback && successCallback(settingRes)
-
-          return
-        }
-
-        // @ts-ignore
-        wx.openSetting({
-          success: (authRes: any) => {
-            this.authStateSettle(scopeName, true)
-
-            successCallback && successCallback(authRes)
-          },
-          fail: (error: any) => {
-            this.authStateSettle(scopeName, false)
-
-            failCallback && failCallback(error)
-          }
-        })
-      },
-      fail: (settingError: any) => {
-        this.authStateSettle(scopeName, false)
-
-        failCallback && failCallback(settingError)
-      }
-    })
-  }
-
-  /**
-   * 兼容用户拒绝授权的场景；
-   *
-   * 仅在该授权第一次被拒绝后由用户点击 openType 按钮手动触发。
-   *
-   * @param {Object} e 点击按钮后返回的 event 对象
-   * @param {string} scopeName 需要授权的 scope
-   * @param {Function} successCallback 授权成功的回调函数
-   * @param {Function} failCallback 授权失败的回调函数
-   */
-  public opensetting(e: any, scopeName: ScopeNameType, successCallback?: Function, failCallback?: Function) {
-    this.compare(scopeName)
-
-    const scope = 'scope.' + scopeName
-
-    if (e.detail.authSetting[scope]) {
-      this.authStateSettle(scopeName, true)
-
-      successCallback && successCallback('')
-    } else {
-      this.authStateSettle(scopeName, false)
-
-      failCallback && failCallback('')
-    }
-  }
-
-  /**
-   * 在调用需授权接口时要再次确认是否获得了用户授权；
-   *
-   * 如获得授权，继续执行该接口；
-   *
-   * 如未获得授权，调用 wx.openSetting 打开设置界面，引导用户开启授权；
-   *
-   * 函数内兼容了用户拒绝授权的场景；
-   *
-   * 注意：设置界面中只会出现小程序向用户请求过的权限！也就是说必须要先调用 check 函数弹出 wx.authorize 的授权框，不管用户同意还是拒绝，该 scope 才会出现在设置界面里。
-   *
-   * @param {Object} e 按钮点击后返回的 event 对象
-   * @param {string} scopeName 需要授权的 scope
-   * @param {Function} successCallback 授权成功的回调函数
-   * @param {Function} failCallback 授权失败的回调函数
-   */
   public auth(e: any, scopeName: ScopeNameType, successCallback?: Function, failCallback?: Function) {
     if (check.str(e)) {
       e = null
@@ -250,32 +223,30 @@ class Authorize {
 
 export interface WxAuthorize {
   /**
-   * 检查用户对当前 scope 的授权状态。
+   * Check the authorization status for the current scope
    *
-   * @param {string} scopeName 需要授权的 scope
-   * @param {Function} successCallback 授权成功的回调函数
-   * @param {Function} failCallback 授权失败的回调函数
+   * @param {string} scopeName The scope that needs check
+   * @param {Function} successCallback Callback after success
+   * @param {Function} failCallback Callback after fail
    */
   check: (scopeName: 'userLocation' | 'userLocationBackground' | 'record' | 'camera' | 'bluetooth' | 'writePhotosAlbum' | 'addPhoneContact' | 'addPhoneCalendar' | 'werun', successCallback?: Function, failCallback?: Function) => undefined
 
   /**
-   * 获得当前 scope 的授权状态并根据授权结果执行对应的操作；
+   * Authorize for the current scope
    *
-   * 注意：在执行 auth 动作之前必须先执行 check 函数。
-   *
-   * @param {Object} e 按钮点击后返回的 event 对象
-   * @param {string} scopeName 需要授权的 scope
-   * @param {Function} successCallback 授权成功的回调函数
-   * @param {Function} failCallback 授权失败的回调函数
+   * @param {Object} e `event` parameter after button clicked
+   * @param {string} scopeName The scope that needs authorization
+   * @param {Function} successCallback Callback after success
+   * @param {Function} failCallback Callback after fail
    */
   auth: (e: any, scopeName: 'userLocation' | 'userLocationBackground' | 'record' | 'camera' | 'bluetooth' | 'writePhotosAlbum' | 'addPhoneContact' | 'addPhoneCalendar' | 'werun', successCallback?: Function, failCallback?: Function) => undefined
 }
 
 /**
- * 微信小程序授权接口封装
+ * Authorization for weapp
  *
- * 在微信小程序中使用地理位置、相册、摄像头等十多种API前，需要调用对应的授权接口，而且在用户拒绝授权的情况下还需进行二次授权的处理；
+ * Some API need to be authorized and agreed by users before they can be called
  *
- * wx_authorize 对这些接口所需的授权逻辑进行了封装，仅需调用 `check` `auth` 两个函数即可实现所有授权接口的逻辑。
+ * `wx_authorize` simplified authorization process, `check()` and `auth()` is enough
  */
 export const wx_authorize: WxAuthorize = check.exception(() => new Authorize())

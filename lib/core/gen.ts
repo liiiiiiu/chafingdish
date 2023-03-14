@@ -1,7 +1,7 @@
 /**
- * Generate UUID.
+ * Generate UUID
  *
- * @returns {string} UUID.
+ * @returns {string} UUID
  *
  * @example
  *
@@ -27,14 +27,16 @@ export function gen_uuid(): string {
 }
 
 /**
- * Generate random integer between two numbers.
+ * Generate random integer between two numbers
  *
- * @param {number|undefined} start Minimum value between two numbers.
- * @param {number|undefined} end Maximum value between two numbers, not contain this value.
+ * @param {number|undefined} start Minimum value between two numbers
+ * @param {number|undefined} end Maximum value between two numbers, not contain this value
  *
- * @returns {number} Random integer between two numbers.
+ * @returns {number} Random integer between two numbers
  *
  * @exapmle
+ *
+ * gen_random_integer() // 3
  *
  * gen_random_integer(10, 100) // 12
  */
