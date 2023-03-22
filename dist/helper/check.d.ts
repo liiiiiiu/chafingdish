@@ -1,6 +1,7 @@
 export default class Check {
     private objProto;
     private fnToString;
+    private isEqual;
     constructor();
     private getTag;
     str(value: unknown): boolean;
@@ -20,4 +21,5 @@ export default class Check {
     args(value: unknown): boolean;
     err(value: unknown): boolean;
     exception(handle: any): any;
+    equal(value1: unknown, value2: unknown, strict?: boolean): boolean;
 }

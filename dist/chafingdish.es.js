@@ -2,6 +2,7 @@ class Check {
   constructor() {
     this.objProto = Object.prototype;
     this.fnToString = this.objProto.toString;
+    this.isEqual = true;
   }
   getTag(value) {
     if (value == null) {
@@ -66,6 +67,40 @@ class Check {
       return handle && this.fun(handle) && handle();
     } catch (error) {
     }
+  }
+  equal(value1, value2, strict = true) {
+    let isEqual = true;
+    const _equal = (val1, val2) => {
+      if (!isEqual)
+        return;
+      if (this.arr(val1) && this.arr(val2)) {
+        if (val1.length !== val2.length) {
+          isEqual = false;
+          return;
+        }
+        for (let i = 0; i < val1.length; i++) {
+          _equal(val1[i], val2[i]);
+        }
+      } else if (this.plainObj(val1) && this.plainObj(val2)) {
+        const keys1 = Object.keys(val1);
+        const keys2 = Object.keys(val2);
+        if (keys1.length !== keys2.length) {
+          isEqual = false;
+          return;
+        }
+        for (let i = 0; i < keys1.length; i++) {
+          if (!Object.prototype.hasOwnProperty.call(val2, keys1[i])) {
+            isEqual = false;
+            return;
+          }
+          _equal(val1[keys1[i]], val2[keys1[i]]);
+        }
+      } else {
+        isEqual = strict ? val1 === val2 : val1 == val2;
+      }
+    };
+    _equal(value1, value2);
+    return isEqual;
   }
 }
 const check$8 = new Check();
@@ -237,7 +272,7 @@ function batchRemove(target) {
     return temp;
   };
 }
-function arrayShuffle([...result]) {
+function shuffle([...result]) {
   let m = result.length;
   while (m) {
     let n = Math.floor(Math.random() * m--);
@@ -245,10 +280,48 @@ function arrayShuffle([...result]) {
   }
   return result;
 }
-function arrayNest(target) {
+function nestArray(target) {
   return function nest(id = null, link = "parent_id") {
     const arr = target.filter((_) => Object.prototype.hasOwnProperty.call(_, "id") && Object.prototype.hasOwnProperty.call(_, link));
     return arr.filter((_) => _[link] == id).map((_) => ({ ..._, children: nest(_.id) }));
+  };
+}
+function pick(target) {
+  return function(handler) {
+    const newArr = [];
+    if (check$6.arr(handler)) {
+      forEach(target, function iteratee(val) {
+        if (check$6.plainObj(val)) {
+          let newObj = {};
+          for (let i = 0; i < handler.length; i++) {
+            const key = handler[i];
+            if (!check$6.str(key))
+              continue;
+            if (Object.prototype.hasOwnProperty.call(val, key)) {
+              newObj[key] = val[key];
+            }
+          }
+          newArr.push(newObj);
+        }
+      });
+      return newArr;
+    } else if (check$6.fun(handler)) {
+      const fn = handler;
+      forEach(target, function iteratee(val) {
+        if (check$6.plainObj(val)) {
+          let newObj = {};
+          Object.keys(val).forEach((key) => {
+            if (!!fn(val[key])) {
+              newObj[key] = val[key];
+            }
+          });
+          newArr.push(newObj);
+        }
+      });
+      return newArr;
+    } else {
+      return target;
+    }
   };
 }
 function wow_array$1(value) {
@@ -279,10 +352,13 @@ function wow_array$1(value) {
         return batchRemove(target);
       }
       if (key === "shuffle") {
-        return arrayShuffle(target);
+        return shuffle(target);
       }
       if (key === "nest") {
-        return arrayNest(target);
+        return nestArray(target);
+      }
+      if (key === "pick") {
+        return pick(target);
       }
       return Reflect.get(target, key);
     }
@@ -621,38 +697,7 @@ function is_today_after$1(value) {
   }
 }
 function is_equal$1(value1, value2, strict = true) {
-  let isEqual = true;
-  const equal = (val1, val2) => {
-    if (!isEqual)
-      return;
-    if (check$5.arr(val1) && check$5.arr(val2)) {
-      if (val1.length !== val2.length) {
-        isEqual = false;
-        return;
-      }
-      for (let i = 0; i < val1.length; i++) {
-        equal(val1[i], val2[i]);
-      }
-    } else if (check$5.plainObj(val1) && check$5.plainObj(val2)) {
-      const keys1 = Object.keys(val1);
-      const keys2 = Object.keys(val2);
-      if (keys1.length !== keys2.length) {
-        isEqual = false;
-        return;
-      }
-      for (let i = 0; i < keys1.length; i++) {
-        if (!Object.prototype.hasOwnProperty.call(val2, keys1[i])) {
-          isEqual = false;
-          return;
-        }
-        equal(val1[keys1[i]], val2[keys1[i]]);
-      }
-    } else {
-      isEqual = strict ? val1 === val2 : val1 == val2;
-    }
-  };
-  equal(value1, value2);
-  return isEqual;
+  return check$5.equal(value1, value2, strict);
 }
 var is = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
@@ -1375,7 +1420,7 @@ async function wx_refresh_data(handler, config) {
                 let curIndex = /* @__PURE__ */ new Set();
                 for (let i = 0; i < compareKeys.length; i++) {
                   for (let j = 0; j < pageDataValue.length; j++) {
-                    if (pageDataValue[j][compareKeys[i][index2]] === compareValues[i][index2]) {
+                    if (check$3.equal(pageDataValue[j][compareKeys[i][index2]], compareValues[i][index2])) {
                       curIndex.add(j);
                       break;
                     }

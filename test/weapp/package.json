@@ -10,6 +10,6 @@
     "miniprogram-api-typings": "^2.8.3-1"
   },
   "dependencies": {
-    "chafingdish": "^1.0.9"
+    "chafingdish": "^1.0.13"
   }
 }

@@ -96,6 +96,15 @@ interface WowArrayType extends Array<any> {
      * // ]
      */
     nest: (root_id?: number | string | null, link?: string) => any[];
+    /**
+     * Pick the specified props from elements in the array
+     *
+     * @example
+     *
+     * [{ id: 1, name: 'a', age: 12 }, { id: 2, name: 'b', age: 13 }].pick([id, name]) // [{ id: 1, name: 'a' }, { id: 2, name: 'b' }]
+     * [{ id: 1, name: 'a', age: 12 }, { id: 2, name: 'b', age: 13 }].pick(val => typeof val === 'number') // [{ id: 1, age: 12 }, { id: 2, age: 13 }]
+     */
+    pick: (handler: string[] | ((val: any) => any)) => any[];
     [prop: string]: any;
 }
 export declare function wow_array(value: object): WowArrayType;

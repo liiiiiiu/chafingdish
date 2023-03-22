@@ -234,7 +234,7 @@ export async function wx_refresh_data(handler: string | {
                 for (let i = 0; i < compareKeys.length; i++) {
                   for (let j = 0; j < pageDataValue.length; j++) {
                     // 值可能是字符串、数字、数组等不同的数据结构
-                    if (pageDataValue[j][compareKeys[i][index]] === compareValues[i][index]) {
+                    if (check.equal(pageDataValue[j][compareKeys[i][index]], compareValues[i][index])) {
                       curIndex.add(j)
                       break
                     }

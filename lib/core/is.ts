@@ -372,44 +372,6 @@ export function is_today_after(value?: string | number): boolean {
  *
  * @returns {boolean} Return true if value1 equal value2, otherwise false
  */
-export function is_equal(value1?: any, value2?: any, strict: boolean = true) {
-  let isEqual = true
-
-  const equal = (val1: any, val2: any) => {
-    if (!isEqual) return
-
-    if (check.arr(val1) && check.arr(val2)) {
-      if (val1.length !== val2.length) {
-        isEqual = false
-        return
-      }
-
-      for (let i = 0; i < val1.length; i++) {
-        equal(val1[i], val2[i])
-      }
-    } else if (check.plainObj(val1) && check.plainObj(val2)) {
-      const keys1 = Object.keys(val1)
-      const keys2 = Object.keys(val2)
-
-      if (keys1.length !== keys2.length) {
-        isEqual = false
-        return
-      }
-
-      for (let i = 0; i < keys1.length; i++) {
-        if (!Object.prototype.hasOwnProperty.call(val2, keys1[i])) {
-          isEqual = false
-          return
-        }
-
-        equal(val1[keys1[i]], val2[keys1[i]])
-      }
-    } else {
-      isEqual = strict ? val1 === val2 : val1 == val2
-    }
-  }
-
-  equal(value1, value2)
-
-  return isEqual
+export function is_equal(value1?: any, value2?: any, strict: boolean = true): boolean {
+  return check.equal(value1, value2, strict)
 }

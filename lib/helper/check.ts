@@ -1,10 +1,13 @@
 export default class Check {
   private objProto: object
   private fnToString: Function
+  private isEqual: boolean
 
   constructor() {
     this.objProto = Object.prototype
     this.fnToString = this.objProto.toString
+
+    this.isEqual = true
   }
 
   private getTag(value: unknown): string {
@@ -90,5 +93,47 @@ export default class Check {
     } catch (error: any) {
       // throw Error(error || 'This tool only for weapp!')
     }
+  }
+
+  public equal(value1: unknown, value2: unknown, strict: boolean = true): boolean {
+    let isEqual = true
+
+    const _equal = (val1: any, val2: any) => {
+      if (!isEqual) return
+
+      if (this.arr(val1) && this.arr(val2)) {
+        if (val1.length !== val2.length) {
+          isEqual = false
+          return
+        }
+
+        for (let i = 0; i < val1.length; i++) {
+          _equal(val1[i], val2[i])
+        }
+      } else if (this.plainObj(val1) && this.plainObj(val2)) {
+        const keys1 = Object.keys(val1)
+        const keys2 = Object.keys(val2)
+
+        if (keys1.length !== keys2.length) {
+          isEqual = false
+          return
+        }
+
+        for (let i = 0; i < keys1.length; i++) {
+          if (!Object.prototype.hasOwnProperty.call(val2, keys1[i])) {
+            isEqual = false
+            return
+          }
+
+          _equal(val1[keys1[i]], val2[keys1[i]])
+        }
+      } else {
+        isEqual = strict ? val1 === val2 : val1 == val2
+      }
+    }
+
+    _equal(value1, value2)
+
+    return isEqual
   }
 }

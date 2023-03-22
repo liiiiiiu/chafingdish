@@ -1,5 +1,5 @@
 // index.ts
-import { wx_router, wx_authorize, is_undefined, is_null, is_plain_object, is_function, is_string } from 'chafingdish'
+import { wx_router, wx_authorize, is_undefined, is_null, is_plain_object, is_function, is_string, ResponseView, ResponseViewType, is_equal, to_original } from 'chafingdish'
 
 import { wx_refresh_data } from '../../utils/util'
 
@@ -41,6 +41,8 @@ Page({
 
   onLoad() {
     wx_authorize.check('userLocation')
+
+    console.log('is_equal, to_original', is_equal([2], [1]), to_original('2'))
   },
 
   // 获取地理位置

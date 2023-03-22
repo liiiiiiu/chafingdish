@@ -104,6 +104,15 @@ interface WowArrayType extends Array<any> {
    * // ]
    */
   nest: (root_id?: number | string | null, link?: string) => any[]
+  /**
+   * Pick the specified props from elements in the array
+   *
+   * @example
+   *
+   * [{ id: 1, name: 'a', age: 12 }, { id: 2, name: 'b', age: 13 }].pick([id, name]) // [{ id: 1, name: 'a' }, { id: 2, name: 'b' }]
+   * [{ id: 1, name: 'a', age: 12 }, { id: 2, name: 'b', age: 13 }].pick(val => typeof val === 'number') // [{ id: 1, age: 12 }, { id: 2, age: 13 }]
+   */
+  pick: (handler: string[] | ((val: any) => any)) => any[]
 
   [prop: string]: any
 }
@@ -172,7 +181,7 @@ function findByDist(target: any[], dist: string) {
 function batchRemove(target: any[]) {
   let argLists: any[] = []
 
-  return function (...args: any[]) {
+  return function(...args: any[]) {
     let indexes = new Set()
     for (let i = 0; i < args.length; i++) {
       argLists.push(args[i])
@@ -207,7 +216,7 @@ function batchRemove(target: any[]) {
   }
 }
 
-function arrayShuffle([...result]) {
+function shuffle([...result]) {
   let m = result.length
 
   while (m) {
@@ -219,10 +228,56 @@ function arrayShuffle([...result]) {
   return result
 }
 
-function arrayNest(target: any[]) {
+function nestArray(target: any[]) {
   return function nest(id = null, link = 'parent_id'): any {
     const arr: any[] = target.filter(_ => Object.prototype.hasOwnProperty.call(_, 'id') && Object.prototype.hasOwnProperty.call(_, link))
     return arr.filter(_ => _[link] == id).map(_ => ({ ..._, children: nest(_.id) }))
+  }
+}
+
+function pick(target: any[]) {
+  return function(handler: string[] | (() => any)) {
+    const newArr: any[] = []
+
+    if (check.arr(handler)) {
+      forEach(target, function iteratee(val: any) {
+        if (check.plainObj(val)) {
+          let newObj: { [prop: string]: any } = {}
+
+          for (let i = 0; i < handler.length; i++) {
+            const key: any = (handler as any[])[i]
+            if (!check.str(key)) continue
+
+            if (Object.prototype.hasOwnProperty.call(val, key)) {
+              newObj[key] = val[key]
+            }
+          }
+
+          newArr.push(newObj)
+        }
+      })
+
+      return newArr
+    } else if (check.fun(handler)) {
+      const fn = handler as Function
+      forEach(target, function iteratee(val: any) {
+        if (check.plainObj(val)) {
+          let newObj: { [prop: string]: any } = {}
+
+          Object.keys(val).forEach(key => {
+            if (!!fn(val[key])) {
+              newObj[key] = val[key]
+            }
+          })
+
+          newArr.push(newObj)
+        }
+      })
+
+      return newArr
+    } else {
+      return target
+    }
   }
 }
 
@@ -266,11 +321,15 @@ export function wow_array(value: object): WowArrayType {
       }
 
       if (key === 'shuffle') {
-        return arrayShuffle(target)
+        return shuffle(target)
       }
 
       if (key === 'nest') {
-        return arrayNest(target)
+        return nestArray(target)
+      }
+
+      if (key === 'pick') {
+        return pick(target)
       }
 
       return Reflect.get(target, key)

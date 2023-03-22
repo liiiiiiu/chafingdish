@@ -106,6 +106,12 @@ nestArr.nest(null, 'parent_id')
 //     ]
 //   }
 // ]
+
+// 接口对接时，后端返回的列表数据中可能包含前端不需要的属性
+// pick 函数用于从数组中挑选包含指定属性的元素
+const pickArr = wow_array([{ id: 1, name: 'a', age: 12 }, { id: 2, name: 'b', age: 13 }])
+pickArr.pick([id, name]) // [{ id: 1, name: 'a' }, { id: 2, name: 'b' }]
+pickArr.pick(val => typeof val === 'number') // [{ id: 1, age: 12 }, { id: 2, age: 13 }]
 ```
 
 ### is
@@ -414,7 +420,7 @@ function onClick(e) {
 }
 
 // 接口同步写法
-const res = wx_promisify(wx.getImageInfo)
+const res = wx_promisify(wx.getImageInfo)({ src: '' })
 // 等同于
 // wx.getImageInfo({
 //   src: '',
@@ -826,26 +832,23 @@ export async funtion deleteUser() {
 
 ## Changelog
 
+### v1.0.14
+
+1. 新增 `wow_array.pick` 函数，用于从数组中挑选包含指定属性的元素
+2. 优化部分函数
+
 ### v1.0.13
 
-新增 `is_equal` 函数，用于比较两个值是否相等
-
-新增 `to_original` 函数，用于将接口返回的字符串类型数据转换为原始的数据类型
+1. 新增 `is_equal` 函数，用于比较两个值是否相等
+2. 新增 `to_original` 函数，用于将接口返回的字符串类型数据转换为原始的数据类型
 
 ### v1.0.12
 
-新增 `is_falsy` 函数，用于判断输入值是否为假值
-
-新增 `is_today` 函数，用于判断输入日期是否为今天
-
-新增 `is_today_before` 函数，用于判断输入日期是否在今天之前
-
-新增 `is_today_after` 函数，用于判断输入日期是否在今天之后
-
-新增 `d_dates_in_month` 函数，用于获取输入日期所处月份包含的所有日期
-
----
-
-优化 `wx_dataset` 函数写法
+1. 新增 `is_falsy` 函数，用于判断输入值是否为假值
+2. 新增 `is_today` 函数，用于判断输入日期是否为今天
+3. 新增 `is_today_before` 函数，用于判断输入日期是否在今天之前
+4. 新增 `is_today_after` 函数，用于判断输入日期是否在今天之后
+5. 新增 `d_dates_in_month` 函数，用于获取输入日期所处月份包含的所有日期
+6. 优化 `wx_dataset` 函数写法
 
 > Chafingdish 旨在覆盖前端开发中所需的工具函数，欢迎Star、Fork、PR
