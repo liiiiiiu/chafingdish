@@ -1,8 +1,11 @@
 import Cast from '../helper/cast'
 import makePy from '../helper/local/chinese2py'
 import { accMul } from '../helper/calc'
+import Check from '../helper/check'
 
 const cast = new Cast()
+
+const check = new Check()
 
 /**
  * Convert value to string
@@ -227,4 +230,21 @@ export function to_cn_pinyin(value: unknown): string[] {
  */
 export function to_original(value: unknown): any {
   return cast.unwrap(value)
+}
+
+/**
+ * Capitalize the first letter of value
+ *
+ * @param {string} value The value to capitalize
+ *
+ * @returns {string} Capitalized value
+ */
+export function to_title(value: string): string {
+  if (!value) return ''
+
+  const val = cast.str(value).toLocaleLowerCase()
+
+  if (!val.length) return ''
+
+  return `${val[0].toLocaleUpperCase()}${val.slice(1)}`
 }

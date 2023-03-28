@@ -337,6 +337,7 @@ to_original('[{ "id": 1, "age": 12 }]') // [{ "id": 1, "age": 12 }]
 // 中文首字母转拼音
 to_cn_pinyin('你好') // ['NH']
 
+// 数据库如果使用分位单位存储金额字段，那么前端需要先把元转换为分
 // 人民币元转分
 // 第2个参数用于判断是否需要四舍五入
 to_cn_cent(1.567) // 156
@@ -347,6 +348,9 @@ to_cn_cent(156, false, true) // '1.56'
 to_cn_cent(156, false, true, 2) // '1.56'
 to_cn_cent(156, false, true, 1) // '1.6'
 to_cn_cent(156, false, true, 0) // 1.56
+
+// 首字母大写
+to_first_letter_upper_case('welcome') // 'Welcome'
 ```
 
 ### date
@@ -701,7 +705,7 @@ page({
 
 ```javascript
 import { ResponseView, ResponseViewType, ResponseViewConfigType } from 'chafingdish'
-import { getList, getUser, createUser, updateUser, deleteUser } from '../models/user'
+import { getList, getUser, createUser, updateUser, deleteUser } from '../api/user'
 
 Page({
   data: {
@@ -795,7 +799,7 @@ Page({
 ```
 
 ```javascript
-// model/user
+// api/user
 
 // 获取接口数据后按如下格式返回
 // ResponseView 在拿到 `data` 值后会进行二次处理
@@ -815,12 +819,14 @@ export async funtion getUser() {
 
 export async funtion createUser() {
   return {
-    data: true,
+    data: true
   }
 }
 
 export async funtion updateUser() {
-  return false
+  return {
+    data: false
+  }
 }
 
 export async funtion deleteUser() {
@@ -831,6 +837,10 @@ export async funtion deleteUser() {
 ```
 
 ## Changelog
+
+### v1.0.15
+
+1. 新增 `to_title` 函数，用于首字母大写
 
 ### v1.0.14
 

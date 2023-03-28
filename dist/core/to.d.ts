@@ -154,3 +154,11 @@ export declare function to_cn_pinyin(value: unknown): string[];
  * @returns {string[]} Converted value
  */
 export declare function to_original(value: unknown): any;
+/**
+ * Capitalize the first letter of value
+ *
+ * @param {string} value The value to capitalize
+ *
+ * @returns {string} Capitalized value
+ */
+export declare function to_title(value: string): string;

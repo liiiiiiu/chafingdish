@@ -59,7 +59,8 @@ export const {
   to_original,
 
   to_cn_cent,
-  to_cn_pinyin
+  to_cn_pinyin,
+  to_title
 } = to
 
 export const {
