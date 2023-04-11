@@ -23,3 +23,25 @@ export declare function gen_uuid(): string;
  * gen_random_integer(10, 100) // 12
  */
 export declare function gen_random_integer(start?: number, end?: number): number;
+/**
+ * Generate HTTP content-type
+ */
+export declare const gen_http_content_type: {
+    none: '';
+    html: 'text/html';
+    plain: 'text/plain';
+    xml: 'text/xml';
+    gif: 'image/gif';
+    jpeg: 'image/jpeg';
+    png: 'image/png';
+    mpeg: 'video/mpeg';
+    quicktime: 'video/quicktime';
+    xhtml: 'application/xhtml+xml';
+    atom: 'application/atom+xml';
+    json: 'application/json';
+    pdf: 'application/pdf';
+    msword: 'application/msword';
+    stream: 'application/octet-stream';
+    formUrlencoded: 'application/x-www-form-urlencoded';
+    formData: 'multipart/form-data';
+};

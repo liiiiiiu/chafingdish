@@ -1265,10 +1265,30 @@ function gen_random_integer$1(start, end) {
   }
   return Math.floor(Math.random() * (end - start)) + Math.min(start, end);
 }
+const gen_http_content_type$1 = {
+  none: "",
+  html: "text/html",
+  plain: "text/plain",
+  xml: "text/xml",
+  gif: "image/gif",
+  jpeg: "image/jpeg",
+  png: "image/png",
+  mpeg: "video/mpeg",
+  quicktime: "video/quicktime",
+  xhtml: "application/xhtml+xml",
+  atom: "application/atom+xml",
+  json: "application/json",
+  pdf: "application/pdf",
+  msword: "application/msword",
+  stream: "application/octet-stream",
+  formUrlencoded: "application/x-www-form-urlencoded",
+  formData: "multipart/form-data"
+};
 var gen = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   gen_uuid: gen_uuid$1,
-  gen_random_integer: gen_random_integer$1
+  gen_random_integer: gen_random_integer$1,
+  gen_http_content_type: gen_http_content_type$1
 }, Symbol.toStringTag, { value: "Module" }));
 const check$4 = new Check();
 function fixIos(value) {
@@ -2056,7 +2076,8 @@ const {
 } = to;
 const {
   gen_uuid,
-  gen_random_integer
+  gen_random_integer,
+  gen_http_content_type
 } = gen;
 const {
   d_day,
@@ -2086,4 +2107,4 @@ const {
 const {
   ResponseView
 } = wxResponsiveView;
-export { ResponseView, d_dates_in_month, d_day, d_diff, d_format, d_format_YMD, d_time, d_timestamp, gen_random_integer, gen_uuid, is_NaN, is_arguments, is_array, is_array_like, is_boolean, is_cn_id_card, is_cn_phone_number, is_email, is_equal, is_error, is_falsy, is_float, is_function, is_integer, is_leap_year, is_length, is_null, is_number, is_object, is_object_like, is_plain_object, is_positive_float, is_positive_integer, is_string, is_symbol, is_today, is_today_after, is_today_before, is_undefined, is_url, to_array, to_boolean, to_cn_cent, to_cn_pinyin, to_float, to_integer, to_null, to_number, to_original, to_string, to_symbol, to_title, to_undefined, wow_array, wx_authorize, wx_clone_deep, wx_dataset, wx_file_info_sync, wx_image_info_sync, wx_promisify, wx_router, wx_window_height, wx_window_pixel_ratio, wx_window_width };
+export { ResponseView, d_dates_in_month, d_day, d_diff, d_format, d_format_YMD, d_time, d_timestamp, gen_http_content_type, gen_random_integer, gen_uuid, is_NaN, is_arguments, is_array, is_array_like, is_boolean, is_cn_id_card, is_cn_phone_number, is_email, is_equal, is_error, is_falsy, is_float, is_function, is_integer, is_leap_year, is_length, is_null, is_number, is_object, is_object_like, is_plain_object, is_positive_float, is_positive_integer, is_string, is_symbol, is_today, is_today_after, is_today_before, is_undefined, is_url, to_array, to_boolean, to_cn_cent, to_cn_pinyin, to_float, to_integer, to_null, to_number, to_original, to_string, to_symbol, to_title, to_undefined, wow_array, wx_authorize, wx_clone_deep, wx_dataset, wx_file_info_sync, wx_image_info_sync, wx_promisify, wx_router, wx_window_height, wx_window_pixel_ratio, wx_window_width };

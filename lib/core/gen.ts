@@ -50,3 +50,44 @@ export function gen_random_integer(start?: number, end?: number): number {
 
   return Math.floor(Math.random() * (end - start)) + Math.min(start, end)
 }
+
+/**
+ * Generate HTTP content-type
+ */
+export const gen_http_content_type: {
+  none: '',
+  html: 'text/html',
+  plain: 'text/plain',
+  xml: 'text/xml',
+  gif: 'image/gif',
+  jpeg: 'image/jpeg',
+  png: 'image/png',
+  mpeg: 'video/mpeg',
+  quicktime: 'video/quicktime',
+  xhtml: 'application/xhtml+xml',
+  atom: 'application/atom+xml',
+  json: 'application/json',
+  pdf: 'application/pdf',
+  msword: 'application/msword',
+  stream: 'application/octet-stream',
+  formUrlencoded: 'application/x-www-form-urlencoded',
+  formData: 'multipart/form-data'
+} = {
+  none: '',
+  html: 'text/html',
+  plain: 'text/plain',
+  xml: 'text/xml',
+  gif: 'image/gif',
+  jpeg: 'image/jpeg',
+  png: 'image/png',
+  mpeg: 'video/mpeg',
+  quicktime: 'video/quicktime',
+  xhtml: 'application/xhtml+xml',
+  atom: 'application/atom+xml',
+  json: 'application/json',
+  pdf: 'application/pdf',
+  msword: 'application/msword',
+  stream: 'application/octet-stream',
+  formUrlencoded: 'application/x-www-form-urlencoded',
+  formData: 'multipart/form-data'
+}

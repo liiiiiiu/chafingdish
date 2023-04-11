@@ -66,6 +66,7 @@ export const {
 export const {
   gen_uuid,
   gen_random_integer,
+  gen_http_content_type
 } = gen
 
 export const {
