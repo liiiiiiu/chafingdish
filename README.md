@@ -35,3 +35,9 @@ import * as utils from 'chafingdish'
 5. wx 函数对部分小程序接口进行 Promise 封装，并提供 `wx_router` 路由函数、`wx_authorize` 授权函数、`wx_refresh_data` 多页数据同步更新函数、 `ResponseView` 视图交互类
 
 > Chafingdish 旨在覆盖前端开发中所需的工具函数，欢迎Star、Fork、PR
+
+## 近期更新
+
+## v1.0.17
+
+1. 新增 `gen_http_content_type` 对象，在添加请求头时简化写法
