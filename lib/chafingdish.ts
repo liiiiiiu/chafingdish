@@ -88,7 +88,8 @@ export const {
   wx_window_height,
   wx_window_pixel_ratio,
   wx_image_info_sync,
-  wx_file_info_sync
+  wx_file_info_sync,
+  wx_refresh_data
 } = wx
 
 export const {
