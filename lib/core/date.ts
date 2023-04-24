@@ -149,3 +149,34 @@ export function d_dates_in_month(value?: string | number, formatter?: string) {
 
   return dates
 }
+
+/**
+ * Get the countdown value
+ *
+ * @param {number} value Countdown time, in seconds
+ *
+ * @returns {object} Countdown object, { days: number, hours: number, minutes: number, seconds: number }
+ *
+ * @example
+ *
+ * d_countdown(60) // { days: 0, hours: 0, minutes: 1, seconds: 0 }
+ * d_countdown(60 * 60 * 24) // { days: 1, hours: 0, minutes: 0, seconds: 0 }
+ * d_countdown(12345) // { days: 0, hours: 3, minutes: 25, seconds: 45 }
+ */
+export function d_countdown(value: number) {
+  const countdown = {
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  }
+
+  if (!value) return countdown
+
+  countdown.days = parseInt(`${(value / 60 / 60) / 24}`)
+  countdown.hours = parseInt(`${(value / 60 / 60) % 24}`)
+  countdown.minutes = parseInt(`${(value / 60) % 60}`)
+  countdown.seconds = parseInt(`${value % 60}`)
+
+  return countdown
+}

@@ -77,7 +77,8 @@ export const {
   d_format,
   d_format_YMD,
   d_diff,
-  d_dates_in_month
+  d_dates_in_month,
+  d_countdown
 } = date
 
 export const {

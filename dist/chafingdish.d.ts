@@ -29,7 +29,7 @@ export declare const gen_uuid: typeof gen.gen_uuid, gen_random_integer: typeof g
     formUrlencoded: "application/x-www-form-urlencoded";
     formData: "multipart/form-data";
 };
-export declare const d_day: typeof import("dayjs"), d_time: typeof date.d_time, d_timestamp: typeof date.d_timestamp, d_format: typeof date.d_format, d_format_YMD: typeof date.d_format_YMD, d_diff: typeof date.d_diff, d_dates_in_month: typeof date.d_dates_in_month;
+export declare const d_day: typeof import("dayjs"), d_time: typeof date.d_time, d_timestamp: typeof date.d_timestamp, d_format: typeof date.d_format, d_format_YMD: typeof date.d_format_YMD, d_diff: typeof date.d_diff, d_dates_in_month: typeof date.d_dates_in_month, d_countdown: typeof date.d_countdown;
 export declare const wx_clone_deep: typeof wx.wx_clone_deep, wx_dataset: typeof wx.wx_dataset, wx_promisify: typeof wx.wx_promisify, wx_window_width: typeof wx.wx_window_width, wx_window_height: typeof wx.wx_window_height, wx_window_pixel_ratio: typeof wx.wx_window_pixel_ratio, wx_image_info_sync: typeof wx.wx_image_info_sync, wx_file_info_sync: typeof wx.wx_file_info_sync, wx_refresh_data: typeof wx.wx_refresh_data;
 export declare const wx_router: wxRouter.WxRouter;
 export declare const wx_authorize: wxAuthorize.WxAuthorize;

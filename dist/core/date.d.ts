@@ -82,3 +82,22 @@ export declare function d_diff(value1: string | number, value2: string | number,
  * d_dates_in_month() // ['2023-03-01T16:50:26+08:00', '2023-03-02T16:50:26+08:00', '2023-03-03T16:50:26+08:00', '2023-03-04T16:50:26+08:00', ..., '2023-03-31T16:51:15+08:00']
  */
 export declare function d_dates_in_month(value?: string | number, formatter?: string): string[];
+/**
+ * Get the countdown value
+ *
+ * @param {number} value Countdown time, in seconds
+ *
+ * @returns {object} Countdown object, { days: number, hours: number, minutes: number, seconds: number }
+ *
+ * @example
+ *
+ * d_countdown(60) // { days: 0, hours: 0, minutes: 1, seconds: 0 }
+ * d_countdown(60 * 60 * 24) // { days: 1, hours: 0, minutes: 0, seconds: 0 }
+ * d_countdown(12345) // { days: 0, hours: 3, minutes: 25, seconds: 45 }
+ */
+export declare function d_countdown(value: number): {
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+};

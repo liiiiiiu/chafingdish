@@ -38,6 +38,10 @@ import * as utils from 'chafingdish'
 
 ## 近期更新
 
+## v1.0.21
+
+1. 新增 `d_countdown` 函数，用于将时间转换为倒计时数值（天、小时、分钟、秒）
+
 ## v1.0.17
 
 1. 新增 `gen_http_content_type` 对象，在添加请求头时简化写法
