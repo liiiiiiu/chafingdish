@@ -60,12 +60,15 @@ export const {
 
   to_cn_cent,
   to_cn_pinyin,
-  to_title
+  to_title,
+  to_percentage,
+  to_thousands
 } = to
 
 export const {
   gen_uuid,
   gen_random_integer,
+
   gen_http_content_type
 } = gen
 

@@ -235,7 +235,7 @@ export declare function is_today_after(value?: string | number): boolean;
  *
  * @param {any} value1 The value to check
  * @param {any} value2 The value to check
- * @param {boolean} strict Use strict mode for value comparison
+ * @param {boolean} strict Use strict mode for value comparison, default is `true`
  *
  * @returns {boolean} Return true if value1 equal value2, otherwise false
  */
