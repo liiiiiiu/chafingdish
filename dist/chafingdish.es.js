@@ -103,7 +103,7 @@ class Check {
     return isEqual;
   }
 }
-const check$8 = new Check();
+const check$7 = new Check();
 const rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/;
 class Cast {
   unwrap(value) {
@@ -130,30 +130,30 @@ class Cast {
     return value;
   }
   str(value) {
-    if (check$8.symbol(value)) {
+    if (check$7.symbol(value)) {
       value = value.description || "";
     }
     return (value + "").toString() + "";
   }
   num(value) {
     let newValue = +this.unwrap(value);
-    return !check$8.nan(newValue) ? newValue : 0;
+    return !check$7.nan(newValue) ? newValue : 0;
   }
   bool(value) {
     return !!value;
   }
   arr(value) {
-    if (check$8.arr(value)) {
+    if (check$7.arr(value)) {
       return value;
     }
-    if (check$8.str(value) && value.indexOf(",") > -1) {
+    if (check$7.str(value) && value.indexOf(",") > -1) {
       return value.split(",");
     }
     return [value];
   }
   symbol(value) {
     let newValue = "";
-    if (!check$8.str(value) || !check$8.num(value)) {
+    if (!check$7.str(value) || !check$7.num(value)) {
       newValue = this.str(value);
     }
     return Symbol(newValue || value + "");
@@ -165,15 +165,15 @@ class Cast {
     return null;
   }
 }
-const check$7 = new Check();
+const check$6 = new Check();
 const cast$2 = new Cast();
 function forEach(obj, fn) {
-  if (check$7.nul(obj) || check$7.undef(obj))
+  if (check$6.nul(obj) || check$6.undef(obj))
     return;
-  if (!check$7.obj(obj)) {
+  if (!check$6.obj(obj)) {
     obj = cast$2.arr(obj);
   }
-  if (check$7.arr(obj)) {
+  if (check$6.arr(obj)) {
     for (let i = 0; i < obj.length; i++) {
       fn.call(null, obj[i], i, obj);
     }
@@ -185,7 +185,7 @@ function forEach(obj, fn) {
     }
   }
 }
-const check$6 = new Check();
+const check$5 = new Check();
 const cast$1 = new Cast();
 function findByIndex(target, index) {
   return Reflect.get(target, +index < 0 ? target.length + +index + "" : index);
@@ -246,7 +246,7 @@ function batchRemove(target) {
       argLists.push(args[i]);
     }
     forEach(argLists, function iteratee(indexOrFn) {
-      if (check$6.num(indexOrFn) || indexOrFn === +indexOrFn + "") {
+      if (check$5.num(indexOrFn) || indexOrFn === +indexOrFn + "") {
         if (+indexOrFn < 0) {
           indexOrFn = target.length + +indexOrFn;
         }
@@ -254,7 +254,7 @@ function batchRemove(target) {
         if (!indexes.has(indexOrFn)) {
           indexes.add(indexOrFn);
         }
-      } else if (check$6.fun(indexOrFn)) {
+      } else if (check$5.fun(indexOrFn)) {
         let fn = indexOrFn;
         forEach(target, function(val, idx) {
           if (!indexes.has(idx) && !!fn(val)) {
@@ -289,13 +289,13 @@ function nestArray(target) {
 function pick(target) {
   return function(handler) {
     const newArr = [];
-    if (check$6.arr(handler)) {
+    if (check$5.arr(handler)) {
       forEach(target, function iteratee(val) {
-        if (check$6.plainObj(val)) {
+        if (check$5.plainObj(val)) {
           let newObj = {};
           for (let i = 0; i < handler.length; i++) {
             const key = handler[i];
-            if (!check$6.str(key))
+            if (!check$5.str(key))
               continue;
             if (Object.prototype.hasOwnProperty.call(val, key)) {
               newObj[key] = val[key];
@@ -305,10 +305,10 @@ function pick(target) {
         }
       });
       return newArr;
-    } else if (check$6.fun(handler)) {
+    } else if (check$5.fun(handler)) {
       const fn = handler;
       forEach(target, function iteratee(val) {
-        if (check$6.plainObj(val)) {
+        if (check$5.plainObj(val)) {
           let newObj = {};
           Object.keys(val).forEach((key) => {
             if (!!fn(val[key])) {
@@ -325,7 +325,7 @@ function pick(target) {
   };
 }
 function wow_array$1(value) {
-  if (check$6.undef(value) || !check$6.arr(value)) {
+  if (check$5.undef(value) || !check$5.arr(value)) {
     value = cast$1.arr(value);
   }
   const hander = {
@@ -579,7 +579,7 @@ var dayjs_min = { exports: {} };
   });
 })(dayjs_min);
 var dayjs = dayjs_min.exports;
-const check$5 = new Check();
+const check$4 = new Check();
 const rint = /^-?\d+$/;
 const rposInt = /^\d+$/;
 const rdecimal = /^(-?\d+)([.]\d+){1}$/;
@@ -589,79 +589,79 @@ const remail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
 const rurl = /^(?=^.{3,255}$)(http(s)?:\/\/)?(www\.)?[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+(:\d+)*(\/\w+\.\w+)*([\?&]\w+=\w*)*$/;
 const rcnIdCard = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
 function is_string$1(value) {
-  return check$5.str(value);
+  return check$4.str(value);
 }
 function is_number$1(value) {
-  return check$5.num(value);
+  return check$4.num(value);
 }
 function is_integer$1(value) {
-  return check$5.num(value) && rint.test(value + "");
+  return check$4.num(value) && rint.test(value + "");
 }
 function is_positive_integer$1(value) {
-  return check$5.num(value) && rposInt.test(value + "");
+  return check$4.num(value) && rposInt.test(value + "");
 }
 function is_float$1(value) {
-  return check$5.num(value) && rdecimal.test(value + "");
+  return check$4.num(value) && rdecimal.test(value + "");
 }
 function is_positive_float$1(value) {
-  return check$5.num(value) && rposDecimal.test(value + "");
+  return check$4.num(value) && rposDecimal.test(value + "");
 }
 function is_boolean$1(value) {
-  return check$5.bool(value);
+  return check$4.bool(value);
 }
 function is_array$1(value) {
-  return check$5.arr(value);
+  return check$4.arr(value);
 }
 function is_array_like$1(value) {
-  return check$5.arrLike(value);
+  return check$4.arrLike(value);
 }
 function is_object$1(value) {
-  return check$5.obj(value);
+  return check$4.obj(value);
 }
 function is_plain_object$1(value) {
-  return check$5.plainObj(value);
+  return check$4.plainObj(value);
 }
 function is_object_like$1(value) {
-  return check$5.objLike(value);
+  return check$4.objLike(value);
 }
 function is_symbol$1(value) {
-  return check$5.symbol(value);
+  return check$4.symbol(value);
 }
 function is_function$1(value) {
-  return check$5.fun(value);
+  return check$4.fun(value);
 }
 function is_NaN$1(value) {
-  return check$5.nan(value);
+  return check$4.nan(value);
 }
 function is_undefined$1(value) {
-  return check$5.undef(value);
+  return check$4.undef(value);
 }
 function is_null$1(value) {
-  return check$5.nul(value);
+  return check$4.nul(value);
 }
 function is_length$1(value) {
-  return check$5.len(value);
+  return check$4.len(value);
 }
 function is_arguments$1(value) {
-  return check$5.args(value);
+  return check$4.args(value);
 }
 function is_error$1(value) {
-  return check$5.err(value);
+  return check$4.err(value);
 }
 function is_leap_year$1(value) {
-  if (!check$5.num(value)) {
+  if (!check$4.num(value)) {
     return false;
   }
   return value % 4 === 0 && value % 100 !== 0 || value % 400 === 0;
 }
 function is_email$1(value) {
-  if (!check$5.str(value)) {
+  if (!check$4.str(value)) {
     return false;
   }
   return remail.test(value + "");
 }
 function is_url$1(value) {
-  if (!check$5.str(value)) {
+  if (!check$4.str(value)) {
     return false;
   }
   return rurl.test(value + "");
@@ -697,7 +697,7 @@ function is_today_after$1(value) {
   }
 }
 function is_equal$1(value1, value2, strict = true) {
-  return check$5.equal(value1, value2, strict);
+  return check$4.equal(value1, value2, strict);
 }
 var is = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
@@ -1322,19 +1322,11 @@ var gen = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   gen_random_integer: gen_random_integer$1,
   gen_http_content_type: gen_http_content_type$1
 }, Symbol.toStringTag, { value: "Module" }));
-const check$4 = new Check();
-function fixIos(value) {
-  if (value && check$4.str(value)) {
-    return value.replace(/-/g, "/");
-  }
-  return value;
-}
 const d_day$1 = dayjs;
 function d_time$1(value) {
   if (!value)
     return +Date.now();
-  value = fixIos(value);
-  return +new Date(value);
+  return +dayjs(value);
 }
 function d_timestamp$1(value) {
   return d_time$1(value);
@@ -1344,15 +1336,7 @@ function d_format$1(value, separator = "-") {
     value = d_time$1();
   }
   separator = separator.trim();
-  value = fixIos(value);
-  let date2 = new Date(+new Date(value));
-  let Y = date2.getFullYear() + separator;
-  let M = (date2.getMonth() + 1 < 10 ? "0" + (date2.getMonth() + 1) : date2.getMonth() + 1) + separator;
-  let D = (date2.getDate() < 10 ? "0" + date2.getDate() : date2.getDate()) + " ";
-  let h = (date2.getHours() < 10 ? "0" + date2.getHours() : date2.getHours()) + ":";
-  let m = (date2.getMinutes() < 10 ? "0" + date2.getMinutes() : date2.getMinutes()) + ":";
-  let s = date2.getSeconds() < 10 ? "0" + date2.getSeconds() : date2.getSeconds();
-  return Y + M + D + h + m + s;
+  return dayjs(value).format(`YYYY${separator}MM${separator}DD HH:mm:ss`);
 }
 function d_format_YMD$1(value, separator = "-") {
   return d_format$1(value, separator).split(" ")[0];
@@ -1802,12 +1786,21 @@ class ResponseView$1 {
     !reachBottom ? this.clear : this.reqPage = this.reqPage + 1;
     this.config.show_loading && this.showLoading;
     const viewValueSuccessHook = (res2) => {
-      var _a2, _b2, _c2, _d, _e;
+      var _a2, _b2, _c2, _d, _e, _f;
       const resData = (_c2 = (_b2 = (_a2 = res2.data) == null ? void 0 : _a2.data) != null ? _b2 : res2.data) != null ? _c2 : res2;
       const isList = Array.isArray(resData);
       let total = isList ? (_e = (_d = res2.total) != null ? _d : resData == null ? void 0 : resData.length) != null ? _e : 0 : !!resData ? 1 : 0;
       let isEmpty = !total && this.reqPage === 1;
-      let isLast = isList ? this.reqPage > 1 && !(resData == null ? void 0 : resData.length) : true;
+      let isLast = false;
+      if (isList) {
+        if (Object.prototype.hasOwnProperty.call(res2, total) && ((_f = resData == null ? void 0 : resData.length) != null ? _f : 0) * this.reqPage >= total) {
+          isLast = true;
+        } else if (this.reqPage > 1 && !(resData == null ? void 0 : resData.length)) {
+          isLast = true;
+        }
+      } else {
+        isLast = true;
+      }
       this.empty = isEmpty;
       this.last = isLast;
       this.total = total;

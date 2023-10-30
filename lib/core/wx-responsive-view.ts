@@ -231,7 +231,17 @@ export class ResponseView implements ResponseViewType {
 
       let total = isList ? (res.total ?? resData?.length ?? 0) : (!!resData ? 1 : 0)
       let isEmpty = !total && this.reqPage === 1
-      let isLast = isList ? (this.reqPage > 1 && !resData?.length) : true
+      let isLast = false
+
+      if (isList) {
+        if (Object.prototype.hasOwnProperty.call(res, total) && ((resData?.length ?? 0) * this.reqPage >= total)) {
+          isLast = true
+        } else if (this.reqPage > 1 && !resData?.length) {
+          isLast = true
+        }
+      } else {
+        isLast = true
+      }
 
       this.empty = isEmpty
       this.last = isLast

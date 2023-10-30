@@ -1,21 +1,6 @@
 import dayjs from 'dayjs'
 import { UnitType } from 'dayjs'
 
-import Check from '../helper/check'
-
-const check = new Check()
-
-// fix ios
-// new Date('2022-12-12') Null
-// new Date('2022/12/12') ok
-function fixIos(value: string | number) {
-  if (value && check.str(value)) {
-    return (value as string).replace(/-/g, '/')
-  }
-
-  return value
-}
-
 export const d_day = dayjs
 
 /**
@@ -32,9 +17,7 @@ export const d_day = dayjs
 export function d_time(value?: string | number): number {
   if (!value) return +Date.now()
 
-  value = fixIos(value)
-
-  return +new Date(value)
+  return +dayjs(value)
 }
 
 /**
@@ -72,18 +55,7 @@ export function d_format(value?: string | number, separator: string = '-'): stri
 
   separator = separator.trim()
 
-  value = fixIos(value)
-
-  let date = new Date(+new Date(value))
-
-  let Y = date.getFullYear() + separator
-  let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + separator
-  let D = (date.getDate() < 10 ? '0' + date.getDate() : date.getDate()) + ' '
-  let h = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':'
-  let m = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) + ':'
-  let s = (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds())
-
-  return Y + M + D + h + m + s
+  return dayjs(value).format(`YYYY${separator}MM${separator}DD HH:mm:ss`)
 }
 
 /**

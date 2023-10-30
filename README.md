@@ -69,6 +69,10 @@ import * as utils from 'chafingdish'
 
 ## 近期更新
 
+## v1.0.23
+
+1. 修复部分函数问题
+
 ## v1.0.22
 
 1. 新增 `to_percentage` 函数，用于将传入值转换为百分比
