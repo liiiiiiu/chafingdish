@@ -1786,21 +1786,12 @@ class ResponseView$1 {
     !reachBottom ? this.clear : this.reqPage = this.reqPage + 1;
     this.config.show_loading && this.showLoading;
     const viewValueSuccessHook = (res2) => {
-      var _a2, _b2, _c2, _d, _e, _f;
+      var _a2, _b2, _c2, _d, _e;
       const resData = (_c2 = (_b2 = (_a2 = res2.data) == null ? void 0 : _a2.data) != null ? _b2 : res2.data) != null ? _c2 : res2;
       const isList = Array.isArray(resData);
       let total = isList ? (_e = (_d = res2.total) != null ? _d : resData == null ? void 0 : resData.length) != null ? _e : 0 : !!resData ? 1 : 0;
       let isEmpty = !total && this.reqPage === 1;
-      let isLast = false;
-      if (isList) {
-        if (Object.prototype.hasOwnProperty.call(res2, total) && ((_f = resData == null ? void 0 : resData.length) != null ? _f : 0) * this.reqPage >= total) {
-          isLast = true;
-        } else if (this.reqPage > 1 && !(resData == null ? void 0 : resData.length)) {
-          isLast = true;
-        }
-      } else {
-        isLast = true;
-      }
+      let isLast = Object.prototype.hasOwnProperty.call(res2, "last") ? !!res2.last : isList ? this.reqPage > 1 && !(resData == null ? void 0 : resData.length) : true;
       this.empty = isEmpty;
       this.last = isLast;
       this.total = total;
