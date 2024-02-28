@@ -1,6 +1,4 @@
-import Check from '../helper/check'
-
-const check = new Check()
+import { is_plain_object, is_function, is_number } from 'chafingdish'
 
 class Router {
   protected _pages: string[]
@@ -9,8 +7,8 @@ class Router {
     [key: string]: string
   }
   protected _route: {
-    to: string
-    from: string
+    to: string,
+    from: string,
     params: any
   } | null
 
@@ -74,7 +72,7 @@ class Router {
   protected path2ConcatParam(path: string, params?: {
     [key: string]: any
   } | null): string {
-    if (!path || !params || !check.plainObj(params)) {
+    if (!path || !params || !is_plain_object(params)) {
       return path
     }
 
@@ -132,13 +130,13 @@ class Router {
   } {
     return {
       success: (res: any) => {
-        successCallback && check.fun(successCallback) && successCallback(res)
+        successCallback && is_function(successCallback) && successCallback(res)
       },
       fail: (err: any) => {
-        failCallback && check.fun(failCallback) && failCallback(err)
+        failCallback && is_function(failCallback) && failCallback(err)
       },
       complete: (res: any) => {
-        completeCallback && check.fun(completeCallback) && completeCallback(res)
+        completeCallback && is_function(completeCallback) && completeCallback(res)
       },
     }
   }
@@ -247,7 +245,7 @@ class Router {
     failCallback?: (data?: any) => any,
     completeCallback?: (data?: any) => any
   ) {
-    if (!check.num(delta) || (delta && delta < 1)) {
+    if (!is_number(delta) || (delta && delta < 1)) {
       delta = 1
     }
 
@@ -359,4 +357,4 @@ export interface WxRouter {
  *
  * Consistent grammar for `wx.switchTab` `wx.reLaunch` `wx.redirectTo` `wx.navigateTo` `wx.navigateBack`
  */
-export const wx_router: WxRouter = check.exception(() => new Router())
+export const wx_router: WxRouter = new Router() as WxRouter

@@ -1,7 +1,9 @@
 // index.ts
-import { wx_router, wx_authorize, is_undefined, is_null, is_plain_object, is_function, is_string, ResponseView, ResponseViewType, is_equal, to_original } from 'chafingdish'
+import { wx_authorize, is_undefined, is_null, is_plain_object, is_function, is_string, ResponseView, ResponseViewType, is_equal, to_original } from 'chafingdish'
 
 import { wx_refresh_data } from '../../utils/util'
+
+import { wx_router } from '../../utils/router'
 
 Page({
   data: {
@@ -72,7 +74,17 @@ Page({
   },
 
   testWxRouter() {
-    wx_router.push('PagesTest1')
+    // wx_router.push('PagesTest1')
+    // wx_router.push('/pages/test1/test1')
+    // wx_router.replace('/pages/test1/test1')
+    // wx_router.replace('PagesTest1')
+    wx_router.push('PagesTest1', {
+      id: 1
+    })
+  },
+
+  testWxRouterTabbar() {
+    wx_router.push('/pages/my/my')
   },
 
   wx_dataset(e: any, key?: string | number) {

@@ -1,5 +1,6 @@
 <!--index.wxml-->
-<button bindtap="testWxRouter">wx_router 跳转</button>
+<button bindtap="testWxRouter">wx_router 跳普通页面</button>
+<button style="margin-top: 30px;" bindtap="testWxRouterTabbar">wx_router 跳 Tabbar 页面</button>
 
 <button data-id="{{ 1 }}" data-0="{{ 2 }}" style="margin-top: 30px;" bindtap="onDataset">dataset</button>
 

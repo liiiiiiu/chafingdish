@@ -69,6 +69,10 @@ import * as utils from 'chafingdish'
 
 ## 近期更新
 
+## v1.0.25
+
+1. 修复 `wx_router` 部分问题
+
 ## v1.0.24
 
 1. 优化 `ResponseView` 分页判断
