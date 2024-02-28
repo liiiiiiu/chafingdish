@@ -1589,7 +1589,7 @@ class Router {
       path = path.replace(Router.RELAUNCH_TAG, "");
     }
     let newPath = this._routes[path] || this._routes[path + Router.TABBAR_TAG] || path;
-    let isTabbar = !!this._routes[path + Router.TABBAR_TAG] || path.indexOf(Router.TABBAR_TAG) > -1;
+    let isTabbar = !!this._routes[this.path2Join(path) + Router.TABBAR_TAG] || path.indexOf(Router.TABBAR_TAG) > -1;
     return { newPath: newPath.replace(Router.TABBAR_TAG, ""), isTabbar, isRelaunch };
   }
   container4Callback(successCallback, failCallback, completeCallback) {
