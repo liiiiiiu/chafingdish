@@ -116,7 +116,7 @@ class Router {
     let newPath: string = this._routes[path] || this._routes[path + Router.TABBAR_TAG] || path
 
     // checks if the `path` is a tabbar page
-    let isTabbar: boolean = (!!this._routes[this.path2Join(path) + Router.TABBAR_TAG] || path.indexOf(Router.TABBAR_TAG) > -1)
+    let isTabbar: boolean = (!!this._routes[path + Router.TABBAR_TAG] || !!this._routes[this.path2Join(path) + Router.TABBAR_TAG] || path.indexOf(Router.TABBAR_TAG) > -1)
 
     return { newPath: newPath.replace(Router.TABBAR_TAG, ''), isTabbar, isRelaunch }
   }

@@ -74,17 +74,18 @@ Page({
   },
 
   testWxRouter() {
-    // wx_router.push('PagesTest1')
+    wx_router.push('PagesTest1')
     // wx_router.push('/pages/test1/test1')
     // wx_router.replace('/pages/test1/test1')
     // wx_router.replace('PagesTest1')
-    wx_router.push('PagesTest1', {
-      id: 1
-    })
+    // wx_router.push('PagesTest1', {
+    //   id: 1
+    // })
   },
 
   testWxRouterTabbar() {
     wx_router.push('/pages/my/my')
+    // wx_router.push('PagesMy')
   },
 
   wx_dataset(e: any, key?: string | number) {

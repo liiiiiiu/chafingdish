@@ -69,6 +69,10 @@ import * as utils from 'chafingdish'
 
 ## 近期更新
 
+## v1.0.27
+
+1. 修复 `wx_router` 跳转 Tabbar 页面失效的问题
+
 ## v1.0.25
 
 1. 修复 `wx_router` 部分问题
